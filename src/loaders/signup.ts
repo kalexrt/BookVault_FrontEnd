@@ -1,6 +1,6 @@
-export class LoginPage {
+export class RegisterPage {
   static load: () => Promise<string> = async () => {
-    const response = await fetch("src/views/pages/login.html");
+    const response = await fetch("src/views/pages/signup.html");
     return response.text();
   };
 

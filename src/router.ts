@@ -1,13 +1,11 @@
 import { AboutUsPage } from "./loaders/aboutus";
 import { LoginPage } from "./loaders/login";
-
+import { RegisterPage } from "./loaders/signup";
 
 const routes: { [key: string]: { component: any } } = {
-  "#/login": {
-    component: LoginPage,
-  },
+  "#/login": { component: LoginPage },
   "#/about-us": { component: AboutUsPage },
-
+  "#/register": { component: RegisterPage },
 };
 
 export class Router {
