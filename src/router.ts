@@ -1,6 +1,6 @@
-import { AboutUsPage } from "./loaders/aboutus";
-import { LoginPage } from "./loaders/login";
-import { RegisterPage } from "./loaders/signup";
+import { AboutUsPage } from "./loaders/aboutus.loader";
+import { LoginPage } from "./loaders/login.loader";
+import { RegisterPage } from "./loaders/register.loader";
 
 const routes: { [key: string]: { component: any } } = {
   "#/login": { component: LoginPage },
