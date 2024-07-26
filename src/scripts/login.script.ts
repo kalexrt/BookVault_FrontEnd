@@ -1,14 +1,16 @@
 import { togglePassword } from "../utils/togglePassword";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { authApi } from "../api/auth.api";
 import { displayResponseErrors } from "../utils/errorHandler";
 
 export class LoginActions {
   static init: () => void = () => {
+    //get form
     const form = document.getElementById("loginForm") as HTMLFormElement;
-
+    //handle submit button
     form.addEventListener("submit",this.handleFormSubmit);
 
+    //handle pasword toggle
     const showPasswordToggle = document.getElementById(
       "showPasswordToggle"
     ) as HTMLButtonElement;

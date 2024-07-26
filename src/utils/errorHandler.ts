@@ -4,10 +4,10 @@ export function displayResponseErrors(error: string) {
       "error-container"
     ) as HTMLDivElement;
     errorContainer.innerHTML = "";
-    console.log("error container", errorContainer);
   
     const errorElement = document.createElement("p");
     errorElement.textContent = error;
     errorElement.style.textAlign = "center";
+    errorElement.style.color = "red";
     errorContainer.appendChild(errorElement);
   }
