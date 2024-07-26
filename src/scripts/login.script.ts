@@ -2,6 +2,7 @@ import { togglePassword } from "../utils/togglePassword";
 import { AxiosError } from "axios";
 import { authApi } from "../api/auth.api";
 import { displayResponseErrors } from "../utils/errorHandler";
+import { Toast } from "../utils/toast";
 
 export class LoginActions {
   static init: () => void = () => {
@@ -31,6 +32,7 @@ export class LoginActions {
       if(err instanceof AxiosError){
         const errorMessage = err.response?.data?.message || err.message;
         displayResponseErrors(errorMessage);
+        Toast.showToast(errorMessage,"error");
         emailInput.value = "";
         passwordInput.value = "";
       }
