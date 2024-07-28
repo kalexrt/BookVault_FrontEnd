@@ -2,12 +2,14 @@ import { AboutUsPage } from "./loaders/aboutus.loader";
 import { LoginPage } from "./loaders/login.loader";
 import { RegisterPage } from "./loaders/register.loader";
 import { HomePage } from "./loaders/home.loader";
+import { ProfilePage } from "./loaders/profile.loader";
 
 const routes: { [key: string]: { component: any } } = {
   "#/login": { component: LoginPage },
   "#/about-us": { component: AboutUsPage },
   "#/register": { component: RegisterPage },
-  '#/home': { component: HomePage }
+  '#/home': { component: HomePage },
+  '#/my-profile': { component: ProfilePage },
 };
 
 export class Router {

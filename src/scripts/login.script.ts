@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 import { authApi } from "../api/auth.api";
 import { displayResponseErrors } from "../utils/errorHandler";
 import { Toast } from "../utils/toast";
+import { Router } from "../router";
 
 export class LoginActions {
   static init: () => void = () => {
@@ -28,6 +29,9 @@ export class LoginActions {
     const passwordInput = document.getElementById("password") as HTMLInputElement;
     try{
       const response = await authApi.login({ email: emailInput.value, password: passwordInput.value });
+      localStorage.setItem("accessToken", response.accessToken);
+      window.history.pushState({}, "", "/#/home");
+      Router.loadContent();
     }catch(err){
       if(err instanceof AxiosError){
         const errorMessage = err.response?.data?.message || err.message;
