@@ -1,6 +1,6 @@
 import { instance } from "./base";
 import { user } from "../interfaces/user.interface";
-export class authApi {
+export class AuthApi {
   //login
   static async login(data: Pick<any, "email" | "password">){
     try {
@@ -14,10 +14,6 @@ export class authApi {
         const errorResponse = err as {
           response: { data: { message: string } };
         };
-        console.log(
-          "Error response data message:",
-          errorResponse.response.data.message
-        );
         throw new Error(errorResponse.response.data.message);
       }
       throw new Error("Unknown error occurred");

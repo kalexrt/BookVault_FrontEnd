@@ -1,6 +1,6 @@
 import { togglePassword } from "../utils/togglePassword";
 import { AxiosError } from "axios";
-import { authApi } from "../api/auth.api";
+import { AuthApi } from "../api/auth.api";
 import { displayResponseErrors } from "../utils/errorHandler";
 import { Toast } from "../utils/toast";
 import { Router } from "../router";
@@ -23,13 +23,16 @@ export class LoginActions {
     }
   };
 
+  //handle login form submit
   static async handleFormSubmit(event: Event) {
     event.preventDefault();
     const emailInput = document.getElementById("email") as HTMLInputElement;
     const passwordInput = document.getElementById("password") as HTMLInputElement;
     try{
-      const response = await authApi.login({ email: emailInput.value, password: passwordInput.value });
+      const response = await AuthApi.login({ email: emailInput.value, password: passwordInput.value });
+      //set access token
       localStorage.setItem("accessToken", response.accessToken);
+      //redirect to home
       window.history.pushState({}, "", "/#/home");
       Router.loadContent();
     }catch(err){
@@ -37,8 +40,11 @@ export class LoginActions {
         const errorMessage = err.response?.data?.message || err.message;
         displayResponseErrors(errorMessage);
         Toast.showToast(errorMessage,"error");
+        //clear inputs
         emailInput.value = "";
         passwordInput.value = "";
+      }else{
+        Toast.showToast("An unexpected error occurred", "error");
       }
     }
   }

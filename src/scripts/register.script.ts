@@ -3,7 +3,7 @@ import { passwordValidator } from "../utils/confirmPasswordValidator";
 import { Toast } from "../utils/toast";
 import { togglePassword } from "../utils/togglePassword";
 import { AxiosError } from "axios";
-import { authApi } from "../api/auth.api";
+import { AuthApi } from "../api/auth.api";
 import { Router } from "../router";
 
 export class RegisterActions {
@@ -57,7 +57,7 @@ export class RegisterActions {
     };
 
     try {
-      await authApi.register(data);
+      await AuthApi.register(data);
       Toast.showToast("Registration successful", "success");
       window.history.pushState({}, "", "/#/login");
       Router.loadContent();

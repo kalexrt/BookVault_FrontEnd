@@ -1,5 +1,5 @@
 <div class="bg-white min-h-screen flex items-center justify-center">
-    <div class="bg-blue-800 text-white bg-opacity-90 p-8 rounded-lg shadow-lg max-w-md w-full">
+    <div class="bg-blue-400 text-white bg-opacity-90 p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 class="text-3xl font-bold mb-6 text-center">
             <span class="text-white">Book</span><span class="text-orange-500">Vault</span>
         </h1>
@@ -11,6 +11,10 @@
             <div class="flex justify-between">
                 <span class="font-semibold">Name:</span>
                 <span id="userName">John Doe</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="font-semibold">User Role:</span>
+                <span id="userRole">God</span>
             </div>
             <div class="flex justify-between">
                 <span class="font-semibold">Email:</span>
@@ -34,9 +38,12 @@
             </div>
         </div>
         <div class="mt-8 text-center">
-            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+            <button id="editProfileBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 mr-8">
                 Edit Profile
-            </a>
+            </button>
+            <button id="deleteProfileBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Delete Profile
+            </button>
         </div>
     </div>
 </div>

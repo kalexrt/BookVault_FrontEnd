@@ -6,7 +6,7 @@ export const instance = axios.create({
   headers: { "X-Custom-Header": "foobar" },
 });
 
-// Add a request interceptor
+//add a request interceptor
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");

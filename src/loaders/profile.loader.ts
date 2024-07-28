@@ -1,3 +1,4 @@
+import { ProfileActions } from "../scripts/profile.script";
 import { NavBar } from "./navbar.loader";
 export class ProfilePage {
   static load: () => Promise<string> = async () => {
@@ -7,6 +8,6 @@ export class ProfilePage {
   };
 
   static initEventListeners: () => void = () => {
-    
+    ProfileActions.init();
   };
 }

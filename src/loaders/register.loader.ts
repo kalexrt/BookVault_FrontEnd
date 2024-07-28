@@ -4,7 +4,7 @@ import { NavBar } from "./navbar.loader";
 export class RegisterPage {
   static load: () => Promise<string> = async () => {
     NavBar.removeNavBar();
-    const response = await fetch("src/views/pages/signup.html");
+    const response = await fetch("src/views/pages/register.html");
     return response.text();
   };
 
