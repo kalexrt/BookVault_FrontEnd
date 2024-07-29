@@ -22,7 +22,20 @@ export class UserApi {
   }
   //update user profile
   static async updateMyProfile(data: user){
-
+    try{
+      const response = await instance.put("/users", data);
+      return response.data;
+    }catch(err){
+      if (typeof err === "object" && err !== null && "response" in err) {
+        const errorResponse = err as {
+          response: { data: { message: string } };
+        };
+        throw new Error(errorResponse.response.data.message);
+      }else if (err instanceof Error) {
+        throw new Error("bad request")
+      }
+      throw new Error("Unknown error occurred");
+    }
   }
   //delete user profile
   static async deleteMyProfile(){
