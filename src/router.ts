@@ -3,6 +3,7 @@ import { LoginPage } from "./loaders/login.loader";
 import { RegisterPage } from "./loaders/register.loader";
 import { HomePage } from "./loaders/home.loader";
 import { ProfilePage } from "./loaders/profile.loader";
+import { SearchPage } from "./loaders/search.loader";
 
 const routes: { [key: string]: { component: any } } = {
   "#/login": { component: LoginPage },
@@ -10,6 +11,7 @@ const routes: { [key: string]: { component: any } } = {
   "#/register": { component: RegisterPage },
   '#/home': { component: HomePage },
   '#/my-profile': { component: ProfilePage },
+  '#/search': {component: SearchPage},
 };
 
 export class Router {

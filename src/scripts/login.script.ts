@@ -6,7 +6,7 @@ import { Toast } from "../utils/toast";
 import { Router } from "../router";
 
 export class LoginActions {
-  static init: () => void = () => {
+  static init(){
     //get form
     const form = document.getElementById("loginForm") as HTMLFormElement;
     //handle submit button

@@ -1,7 +1,7 @@
 import { Router } from "../router";
 
 export class NavBarActions {
-  static init: () => void = () => {
+  static init(){
     //for home
     const homeBtn = document.getElementById("homeBtn") as HTMLElement;
     if (homeBtn)homeBtn.addEventListener("click", NavBarActions.handleHome);

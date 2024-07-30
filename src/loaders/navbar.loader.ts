@@ -1,7 +1,7 @@
 import { NavBarActions } from "../scripts/navbar.script";
 
 export class NavBar{
-    static load: () => Promise<string> = async () => {
+    static async load(){
         const response = await fetch("src/views/components/navbar.html");
         return response.text();
       };

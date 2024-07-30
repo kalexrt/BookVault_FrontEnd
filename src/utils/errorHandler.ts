@@ -1,5 +1,4 @@
 export function displayResponseErrors(error: string) {
-    console.log("err in response ", error);
     const errorContainer = document.getElementById(
       "error-container"
     ) as HTMLDivElement;

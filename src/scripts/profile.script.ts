@@ -5,7 +5,7 @@ import { Toast } from "../utils/toast";
 import { NavBarActions } from "./navbar.script";
 
 export class ProfileActions {
-  static init: () => void = () => {
+  static init(){
     ProfileActions.loadProfileData();
 
     //get buttons

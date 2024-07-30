@@ -7,7 +7,7 @@ import { AuthApi } from "../api/auth.api";
 import { Router } from "../router";
 
 export class RegisterActions {
-  static init: () => void = () => {
+  static init(){
     const form = document.getElementById("signupForm") as HTMLFormElement;
 
     form.addEventListener("submit", this.handleFormSubmit);
