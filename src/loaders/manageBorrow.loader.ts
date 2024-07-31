@@ -1,3 +1,4 @@
+import { manageBorrowActions } from "../scripts/manageBorrow.script";
 import { AdminNav } from "./adminNav.loader";
 
 export class ManageBorrow {
@@ -8,6 +9,6 @@ export class ManageBorrow {
     };
   
     static initEventListeners(){
-        
+        manageBorrowActions.init();
     };
   }

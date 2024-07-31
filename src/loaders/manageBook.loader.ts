@@ -1,3 +1,4 @@
+import { manageBookActions } from "../scripts/manageBook.script";
 import { AdminNav } from "./adminNav.loader";
 
 export class ManageBook {
@@ -8,7 +9,7 @@ export class ManageBook {
     };
   
     static initEventListeners(){
-        
+        manageBookActions.init();
     };
   }
   

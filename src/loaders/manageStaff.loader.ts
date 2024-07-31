@@ -1,3 +1,4 @@
+import { manageStaffActions } from "../scripts/manageStaff.script";
 import { AdminNav } from "./adminNav.loader";
 
 export class ManageStaff {
@@ -8,6 +9,6 @@ export class ManageStaff {
     };
   
     static initEventListeners(){
-        
+        manageStaffActions.init();
     };
   }

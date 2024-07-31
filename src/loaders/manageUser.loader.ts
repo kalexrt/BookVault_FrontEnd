@@ -1,3 +1,4 @@
+import { manageUserActions } from "../scripts/manageUser.script";
 import { AdminNav } from "./adminNav.loader";
 
 export class ManageUser {
@@ -8,6 +9,6 @@ export class ManageUser {
     };
   
     static initEventListeners(){
-        
+        manageUserActions.init();
     };
   }

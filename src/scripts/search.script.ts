@@ -39,16 +39,18 @@ export class SearchActions {
 
     // Add event listeners
     this.applyFiltersBtn.addEventListener("click", () => {
+      this.currentPage = 1;
       this.handleSearch();
     });
     this.searchBtn.addEventListener("click", (e) => {
-      console.log("search button clicked");
       e.preventDefault();
+      this.currentPage = 1;
       this.handleSearch();
     });
     this.searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
+        this.currentPage = 1;
         this.handleSearch();
       }
     });
