@@ -17,7 +17,7 @@ export class HomeActions {
     ) as HTMLInputElement;
     const searchTerm = searchInput.value.trim();
 
-    if (searchTerm) {
+    if (searchTerm || searchTerm == "") {
       // Store the search term in sessionStorage
       sessionStorage.setItem("homeSearchTerm", searchTerm);
 

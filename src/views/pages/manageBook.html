@@ -1,0 +1,70 @@
+<div class="ml-48 p-5">
+  <!-- Added margin-left to account for the navbar width -->
+  <form class="mb-3">
+    <input
+    type="file"
+    id="image"
+    class="mb-0.5 p-0.5 border rounded w-full"
+    required
+  />
+    <input
+      type="text"
+      id="title"
+      placeholder="Title"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="text"
+      id="isbn"
+      placeholder="ISBN"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="text"
+      id="authors"
+      placeholder="Authors (comma-separated)"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="text"
+      id="genres"
+      placeholder="Genres (comma-separated)"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="date"
+      id="publishedDate"
+      placeholder="Published Date"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="number"
+      id="totalCopies"
+      placeholder="Total Copies"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      min="1"
+      required
+    />
+    <div class="text-red-500 mt-2 hidden error"></div>
+    <button type="submit" class="bg-green-500 text-white p-1 rounded w-full">
+      Add New Book
+    </button>
+  </form>
+  <div class="w-full flex gap-2 mb-4">
+    <input
+      type="text"
+      id="searchInput"
+      class="p-1 border rounded flex-grow"
+      placeholder="Search for Book..."
+    />
+    <button class="p-1 border rounded bg-blue-500 text-white">Search</button>
+  </div>
+  <div id="book-table" class="w-full">
+    <!-- book table will be displayed here -->
+  </div>
+</div>

@@ -6,14 +6,11 @@ import { HomePage } from "./loaders/home.loader";
 import { ProfilePage } from "./loaders/profile.loader";
 import { SearchPage } from "./loaders/search.loader";
 import { BookPage } from "./loaders/book.loader";
-
-interface Route {
-  path: string;
-  component: {
-    load: (params?: any) => Promise<string>;
-    initEventListeners?: (params?: any) => void;
-  };
-}
+import { ManageStaff } from "./loaders/manageStaff.loader";
+import { ManageBook } from "./loaders/manageBook.loader";
+import { ManageBorrow } from "./loaders/manageBorrow.loader";
+import { ManageUser } from "./loaders/manageUser.loader";
+import { Route } from "./interfaces/route.interface";
 
 const routes: Route[] = [
   { path: "#/login", component: LoginPage },
@@ -23,6 +20,10 @@ const routes: Route[] = [
   { path: "#/my-profile", component: ProfilePage },
   { path: "#/search", component: SearchPage },
   { path: "#/book/:id", component: BookPage },
+  { path: "#/manage-staff", component: ManageStaff },
+  { path: "#/manage-book", component: ManageBook },
+  { path: "#/manage-borrow", component: ManageBorrow },
+  { path: "#/manage-user", component: ManageUser },
 ];
 
 export class Router {
@@ -34,6 +35,7 @@ export class Router {
       const result = matchFunction(path);
 
       if (result) {
+        // Load the component's content based on route parameters
         let content: string;
         if (Object.keys(result.params).length > 0) {
           content = await route.component.load(result.params);
@@ -41,8 +43,10 @@ export class Router {
           content = await route.component.load();
         }
 
+        // Insert the loaded content into the app's main container
         document.getElementById("app")!.innerHTML = content;
 
+        // Initialize event listeners for the component
         if (Object.keys(result.params).length > 0) {
           route.component.initEventListeners!(result.params);
         } else {

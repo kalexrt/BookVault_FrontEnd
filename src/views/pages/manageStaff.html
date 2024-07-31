@@ -1,0 +1,63 @@
+<div class="ml-48 p-5">  <!-- Added margin-left to account for the navbar width -->
+  <form class="mb-3">
+    <input
+      type="text"
+      id="name"
+      placeholder="Name"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="email"
+      id="email"
+      placeholder="Email"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="number"
+      id="age"
+      placeholder="Age"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <select id="gender" class="mb-0.5 p-0.5 border rounded w-full" required>
+      <option value="" disabled selected>Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      autocomplete="new-password" 
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Confirm Password"
+      autocomplete="new-password"
+      class="mb-0.5 p-0.5 border rounded w-full"
+      required
+    />
+    <div class="text-red-500 mt-2 hidden error"></div>
+    <button type="submit" class="bg-green-500 text-white p-1 rounded w-full">
+      Add New Staff
+    </button>
+  </form>
+  <div class="w-full flex gap-2 mb-4">
+    <input
+      type="text"
+      id="searchInput"
+      class="p-1 border rounded flex-grow"
+      placeholder="Search for Staff..."
+    />
+    <button class="p-1 border rounded bg-blue-500 text-white">Search</button>
+  </div>
+  <div id="staff-table" class="w-full">
+    <!-- staff table will be displayed here -->
+  </div>
+</div>

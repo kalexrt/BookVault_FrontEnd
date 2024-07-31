@@ -33,11 +33,9 @@ export class SearchActions {
 
     //for home page search result
     const storedSearchTerm = sessionStorage.getItem("homeSearchTerm");
-    if (storedSearchTerm) {
-      this.searchInput.value = storedSearchTerm;
-      sessionStorage.removeItem("homeSearchTerm"); // Clear the stored search term
-      this.handleSearch(); // Perform the search
-    }
+    this.searchInput.value = storedSearchTerm!;
+    sessionStorage.removeItem("homeSearchTerm"); // Clear the stored search term
+    this.handleSearch(); // Perform the search
 
     // Add event listeners
     this.applyFiltersBtn.addEventListener("click", () => {
@@ -116,11 +114,13 @@ export class SearchActions {
     const booksHTML = books
       .map(
         (book: book) => `
-        <div class="bg-white p-4 rounded shadow">
-          <img src="${book.image_link || "book-cover-placeholder.jpg"}" 
-               alt="${book.title || "Book"} Cover" 
-               class="w-full h-48 object-cover mb-2">
-          <h2 class="text-lg text-black font-semibold">${
+        <a href="#/book/${book.id}" 
+        class="block transition duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-lg">
+        <div class="bg-white p-4 rounded shadow transition duration-300 ease-in-out hover:bg-orange-100">
+          <img src="${book.image_link || "book-cover-placeholder.jpg"}"
+              alt="${book.title || "Book"} Cover"
+              class="w-full h-48 object-cover mb-2 transition duration-300 ease-in-out hover:opacity-80">
+          <h2 class="text-lg text-black font-semibold transition duration-300 ease-in-out group-hover:text-orange-600">${
             book.title || "Untitled"
           }</h2>
           <p class="text-sm text-gray-600">${
@@ -134,10 +134,11 @@ export class SearchActions {
                 )}/5 (${book.totalReviews} reviews)</p>`
               : ""
           }
-          <p class="text-sm text-green-600">Available: ${
-            book.available_copies
-          }/${book.total_copies}</p>
+          <p class="text-sm text-green-600">Available: ${book.available_copies}/${
+                book.total_copies
+              }</p>
         </div>
+      </a>
       `
       )
       .join("");
