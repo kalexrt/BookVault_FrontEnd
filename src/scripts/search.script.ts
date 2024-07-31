@@ -31,7 +31,13 @@ export class SearchActions {
     ) as HTMLButtonElement;
     this.bookResults = document.getElementById("bookResults") as HTMLDivElement;
 
-    // console.log(this.searchInput, this.searchBtn, this.applyFiltersBtn);
+    //for home page search result
+    const storedSearchTerm = sessionStorage.getItem("homeSearchTerm");
+    if (storedSearchTerm) {
+      this.searchInput.value = storedSearchTerm;
+      sessionStorage.removeItem("homeSearchTerm"); // Clear the stored search term
+      this.handleSearch(); // Perform the search
+    }
 
     // Add event listeners
     this.applyFiltersBtn.addEventListener("click", () => {

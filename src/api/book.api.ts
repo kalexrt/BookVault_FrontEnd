@@ -35,4 +35,24 @@ export class BookApi {
       handleApiError(err);
     }
   }
+
+  static async getBookById(id: string) {
+    // make the api call to get a book by id
+    try{
+      const response = await instance.get(`/books/${id}`);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
+
+  static async deleteBookById(id: string) {
+    // make the api call to delete a book by id
+    try{
+      const response = await instance.delete(`/books/${id}`);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
 }

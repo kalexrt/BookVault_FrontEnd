@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
+    "@types/path-to-regexp": "^1.7.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
@@ -20,6 +21,7 @@
   "dependencies": {
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
+    "path-to-regexp": "^7.1.0",
     "yup": "^1.4.0"
   }
 }

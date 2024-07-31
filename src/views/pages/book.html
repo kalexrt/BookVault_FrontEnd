@@ -1,37 +1,34 @@
-<div class="bg-blue-400 text-white min-h-screen flex flex-col pt-20">
+<div class="bg-blue-400 text-white min-h-screen flex flex-col justify-center items-center pt-20">
+  <!-- Main Content Area -->
+  <div class="w-full max-w-4xl p-4">
+    <!-- Main Content - Book Details -->
+    <main class="bg-white p-6 rounded shadow text-black">
+      <div class="flex flex-col sm:flex-row justify-around items-center">
+        <!-- Book Cover -->
+        <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
+          <img id="book-cover" src="book-cover-placeholder.jpg" alt="Book Cover" class="w-full h-64 object-cover rounded">
+        </div>
+        
+        <!-- Book Information -->
+        <div class="text-center sm:text-left">
+          <h1 id="book-title" class="text-3xl font-bold mb-2">Book Title</h1>
+          <p class="text-xl mb-4">by <span id="author-name" class="text-gray-800">Author Name</span></p>
+          <p class="text-gray-600 mb-2"><strong>Genre:</strong> <span id="genre-name">Genre Name</span></p>
+          <p class="text-gray-600 mb-2"><strong>ISBN:</strong> <span id="isbn">1234567890</span></p>
+          <p class="text-gray-600 mb-2"><strong>Published:</strong> <span id="publish-date">Publish Date</span></p>
+          <p class="text-gray-600 mb-2"><strong>Rating:</strong> <span id="rating">4/5</span></p>
+          <p class="text-gray-600 mb-2"><strong>Total Copies:</strong> <span id="total-copies">4/5</span></p>
+          <p class="text-gray-600 mb-2"><strong>Available Copies:</strong> <span id="available-copies">4/5</span></p>
+          <p class="text-gray-600"><strong>Total Reviews:</strong> <span id="total-reviews">1</span></p>
+        </div>
+      </div>
+    </main>
 
-    <!-- Main Content Area -->
-    <div class="flex-grow flex mt-4">
-      
-      <!-- Main Content - Book Details -->
-      <main class="flex-grow p-4">
-        <div class="bg-white p-6 rounded shadow text-black">
-          <div class="flex flex-col sm:flex-row">
-            <!-- Book Cover -->
-            <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
-              <img src="book-cover-placeholder.jpg" alt="Book Cover" class="w-full h-64 object-cover rounded">
-            </div>
-            
-            <!-- Book Information -->
-            <div>
-              <h1 class="text-3xl font-bold mb-2">Book Title</h1>
-              <p class="text-xl mb-4">by <span class="text-gray-800">Author Name</span></p>
-              <p class="text-gray-600 mb-2"><strong>Genre:</strong> Genre Name</p>
-              <p class="text-gray-600 mb-2"><strong>ISBN:</strong> 1234567890</p>
-              <p class="text-gray-600 mb-2"><strong>Published:</strong> Publish Date</p>
-              <p class="text-gray-600 mb-4"><strong>Summary:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              <p class="text-gray-600"><strong>Page Count:</strong> 350 pages</p>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Notify Button -->
-        <div class="mt-6 text-center">
-          <button class="bg-orange-500 text-white px-6 py-3 rounded hover:bg-orange-600">
-            Notify When Available
-          </button>
-        </div>
-      </main>
+    <!-- Notify Button -->
+    <div class="mt-6 text-center">
+      <button class="bg-orange-500 text-white px-6 py-3 rounded hover:bg-orange-600">
+        Notify When Available
+      </button>
     </div>
-  
   </div>
+</div>
