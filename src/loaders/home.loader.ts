@@ -1,3 +1,4 @@
+import { HomeActions } from "../scripts/home.script";
 import { NavBar } from "./navbar.loader";
 export class HomePage {
   static async load(){
@@ -7,6 +8,6 @@ export class HomePage {
   };
 
   static initEventListeners(){
-    
+    HomeActions.init();
   };
 }

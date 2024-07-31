@@ -1,3 +1,4 @@
+import { SearchActions } from "../scripts/search.script";
 import { NavBar } from "./navbar.loader";
 export class SearchPage {
   static async load(){
@@ -7,6 +8,6 @@ export class SearchPage {
   };
 
   static initEventListeners() {
-    
+    SearchActions.init();
   };
 }

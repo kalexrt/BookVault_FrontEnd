@@ -1,4 +1,5 @@
 import { user } from "../interfaces/user.interface";
+import { handleApiError } from "../utils/handleApiError";
 import { instance } from "./base";
 
 export class UserApi {
@@ -8,16 +9,7 @@ export class UserApi {
       const response = await instance.get("/users/self");
       return response.data;
     } catch (err) {
-      if (err instanceof Error) {
-        throw err;
-      }
-      if (typeof err === "object" && err !== null && "response" in err) {
-        const errorResponse = err as {
-          response: { data: { message: string } };
-        };
-        throw new Error(errorResponse.response.data.message);
-      }
-      throw new Error("Unknown error occurred");
+      handleApiError(err);
     }
   }
   //update user profile
@@ -26,15 +18,7 @@ export class UserApi {
       const response = await instance.put("/users", data);
       return response.data;
     }catch(err){
-      if (typeof err === "object" && err !== null && "response" in err) {
-        const errorResponse = err as {
-          response: { data: { message: string } };
-        };
-        throw new Error(errorResponse.response.data.message);
-      }else if (err instanceof Error) {
-        throw new Error("bad request")
-      }
-      throw new Error("Unknown error occurred");
+      handleApiError(err);
     }
   }
   //delete user profile
@@ -43,16 +27,7 @@ export class UserApi {
         const response = await instance.delete("/users");
         return response.data;
     }catch(err){
-        if (err instanceof Error) {
-            throw err;
-          }
-          if (typeof err === "object" && err !== null && "response" in err) {
-            const errorResponse = err as {
-              response: { data: { message: string } };
-            };
-            throw new Error(errorResponse.response.data.message);
-          }
-          throw new Error("Unknown error occurred");
+      handleApiError(err);
     }
   }
 }
