@@ -20,11 +20,11 @@ export class Pagination {
     private render() {
       const paginationHTML = `
         <div class="flex items-center justify-center mt-4">
-          <button class="px-4 py-2 mx-1 bg-gray-200 rounded ${this.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
+          <button class="text-black px-4 py-2 mx-1 bg-gray-200 rounded ${this.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
                   ${this.currentPage === 1 ? 'disabled' : ''} 
                   data-action="prev">Previous</button>
           <span class="mx-4">Page ${this.currentPage}${this.totalPages ? ` of ${this.totalPages}` : ''}</span>
-          <button class="px-4 py-2 mx-1 bg-gray-200 rounded ${this.totalPages !== null && this.currentPage === this.totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
+          <button class="text-black px-4 py-2 mx-1 bg-gray-200 rounded ${this.totalPages !== null && this.currentPage === this.totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
                   ${this.totalPages !== null && this.currentPage === this.totalPages ? 'disabled' : ''} 
                   data-action="next">Next</button>
         </div>
