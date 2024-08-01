@@ -11,6 +11,7 @@ export class manageBookActions {
   private static searchInput: HTMLInputElement;
   private static searchBtn: HTMLButtonElement;
   private static bookTable: HTMLDivElement;
+  private static editBookPopup: HTMLElement;
 
   private static pagination: Pagination;
   private static currentPage: number = 1;
@@ -29,6 +30,9 @@ export class manageBookActions {
     ) as HTMLButtonElement;
     this.addBookPopup = document.getElementById("addBookPopup") as HTMLElement;
     this.bookTable = document.getElementById("bookTable") as HTMLDivElement;
+    this.editBookPopup = document.getElementById(
+      "editBookPopup"
+    ) as HTMLElement;
 
     //Initialize pagination
     this.pagination = new Pagination("paginationContainer", (page) => {
@@ -48,11 +52,16 @@ export class manageBookActions {
     this.addBookBtn.addEventListener("click", () => {
       this.addBookPopup.classList.remove("hidden");
     });
-
     // Close popup when clicking outside the form
     this.addBookPopup.addEventListener("click", (e) => {
       if (e.target === this.addBookPopup) {
         this.addBookPopup.classList.add("hidden");
+      }
+    });
+     // Close edit Book popup when clicking outside the form
+     this.editBookPopup.addEventListener("click", (e) => {
+      if (e.target === this.editBookPopup) {
+        this.editBookPopup.classList.add("hidden");
       }
     });
     this.searchInput.addEventListener("keypress", (e) => {
@@ -151,9 +160,6 @@ export class manageBookActions {
       );
     }
   }
-  static async openEditPopup(book: book) {
-    console.log(book);
-  }
 
   static handleDeleteButton(target: HTMLElement) {
     const bookId = target.dataset.id;
@@ -163,11 +169,89 @@ export class manageBookActions {
   }
 
   static handleEditButton(target: HTMLElement) {
-    const userData = target.dataset.user;
-    if (userData) {
-      this.openEditPopup(JSON.parse(userData));
+    const bookData = target.dataset.user;
+    if (!bookData) {
+      console.error("No user data found");
+      return;
+    }
+    const book = JSON.parse(bookData)
+    const editTitle = document.getElementById('editTitle') as HTMLInputElement;
+    const editIsbn = document.getElementById('editIsbn') as HTMLInputElement;
+    const editAuthors = document.getElementById('editAuthors')as HTMLInputElement;
+    const editGenres = document.getElementById('editGenres')as HTMLInputElement;
+    const editAvailableCopies = document.getElementById('editAvailableCopies') as HTMLInputElement;
+    const editTotalCopies = document.getElementById('editTotalCopies') as HTMLInputElement;
+    const submitButton = document.getElementById("editSubmitBtn") as HTMLButtonElement ;
+    const editBookPopup = document.getElementById("editBookPopup") as HTMLElement ;
+
+    // Assigning the values from the book object to the input fields
+    editTitle.value = book.title;
+    editIsbn.value = book.isbn;
+    editAuthors.value = book.authors;
+    editGenres.value = book.genres;
+    editTotalCopies.value = book.total_copies;
+    editAvailableCopies.value = book.available_copies;
+
+    // Remove any existing event listeners to prevent duplicates
+    submitButton.removeEventListener("click", this.handleEditSubmitWrapper);
+
+    // Add a new event listener
+    submitButton.addEventListener("click", this.handleEditSubmitWrapper);
+
+    // Store the userId for later use
+    submitButton.dataset.bookId = book.id;
+
+    editBookPopup.classList.remove("hidden");
+  }
+
+  // Wrapper function to handle the event and pass the userId
+  private static handleEditSubmitWrapper = (e: Event) => {
+    const submitButton = e.target as HTMLButtonElement;
+    const bookId = submitButton.dataset.bookId;
+    if (bookId) {
+      this.handleEditSubmit(e, bookId);
+    }
+  };
+
+  static async handleEditSubmit(event: Event, bookId: string) {
+    event.preventDefault();
+    const form = document.getElementById("editBookForm") as HTMLFormElement;
+    const editTitle = document.getElementById('editTitle') as HTMLInputElement;
+    const editIsbn = document.getElementById('editIsbn') as HTMLInputElement;
+    const editAuthors = document.getElementById('editAuthors')as HTMLInputElement;
+    const editGenres = document.getElementById('editGenres')as HTMLInputElement;
+    const editAvailableCopies = document.getElementById('editAvailableCopies') as HTMLInputElement;
+    const editTotalCopies = document.getElementById('editTotalCopies') as HTMLInputElement;
+    const editBookPopup = document.getElementById("editBookPopup") as HTMLElement ;
+
+    const authors = editAuthors.value
+      .split(",")
+      .map((author) => author.trim());
+    const genres = editGenres.value.split(",").map((genre) => genre.trim());
+
+    const bookData = {
+      title: editTitle.value,
+      isbn: editIsbn.value,
+      authors: authors,
+      genres: genres,
+      totalCopies: editTotalCopies.value,
+      availableCopies: editAvailableCopies.value,
+    };
+    try {
+      await BookApi.updateBook(bookId, bookData);
+      Toast.showToast("book updated successfully.", "success");
+      //reset form, remove popup and refresh search
+      form.reset();
+      editBookPopup.classList.add("hidden");
+      manageBookActions.handleSearch();
+    }catch(err){
+      Toast.showToast(
+        "An error occurred while updating the book. Please try again.",
+        "error"
+      );
     }
   }
+  
 
   static async handleFormSubmit(event: Event) {
     event.preventDefault();

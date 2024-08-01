@@ -261,8 +261,6 @@ export class manageUserActions {
     const userId = submitButton.dataset.userId;
     if (userId) {
       this.handleEditSubmit(e, userId);
-    } else {
-      console.error("User ID not found");
     }
   };
 
