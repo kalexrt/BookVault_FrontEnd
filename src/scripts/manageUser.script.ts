@@ -8,6 +8,8 @@ export class manageUserActions {
   private static form: HTMLFormElement;
   private static searchInput: HTMLInputElement;
   private static searchBtn: HTMLButtonElement;
+  private static addUserBtn: HTMLButtonElement;
+  private static addUserPopup: HTMLElement;
   private static userTable: HTMLDivElement;
 
   private static pagination: Pagination;
@@ -22,14 +24,18 @@ export class manageUserActions {
       "searchInput"
     ) as HTMLInputElement;
     this.searchBtn = document.getElementById("searchBtn") as HTMLButtonElement;
+    this.addUserBtn = document.getElementById(
+      "addUserBtn"
+    ) as HTMLButtonElement;
+    this.addUserPopup = document.getElementById("addUserPopup") as HTMLElement;
     this.userTable = document.getElementById("userTable") as HTMLDivElement;
-    
+
     //Initialize pagination
     this.pagination = new Pagination("paginationContainer", (page) => {
       this.currentPage = page;
       this.handleSearch();
     });
-    
+
     this.handleSearch(); // Perform the search for initial page load
 
     //event listeners
@@ -38,6 +44,18 @@ export class manageUserActions {
       e.preventDefault();
       this.handleSearch();
     });
+    // Open popup when Add User button is clicked
+    this.addUserBtn.addEventListener("click", () => {
+      this.addUserPopup.classList.remove("hidden");
+    });
+
+    // Close popup when clicking outside the form
+    this.addUserPopup.addEventListener("click", (e) => {
+      if (e.target === this.addUserPopup) {
+        this.addUserPopup.classList.add("hidden");
+      }
+    });
+
     this.searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -96,8 +114,12 @@ export class manageUserActions {
           <td class="p-2 border">${user.name}</td>
           <td class="p-2 border">${user.email}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(user)}'>Edit</button>
-            <button class="text-red-500  font-bold hover:underline delete-btn" data-id="${user.id}">Delete</button>
+            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(
+              user
+            )}'>📝</button>
+            <button class="text-red-500 font-bold hover:underline delete-btn" data-id="${
+              user.id
+            }">🗑</button>
           </td>
         </tr>
       `
@@ -129,7 +151,7 @@ export class manageUserActions {
   }
 
   static async openEditPopup(user: user) {
-    console.log(user)
+    console.log(user);
   }
 
   static handleDeleteButton(target: HTMLElement) {
@@ -138,7 +160,7 @@ export class manageUserActions {
       this.deleteUser(userId);
     }
   }
-  
+
   static handleEditButton(target: HTMLElement) {
     const userData = target.dataset.user;
     if (userData) {
@@ -146,44 +168,44 @@ export class manageUserActions {
     }
   }
 
-  static async handleFormSubmit(event: Event){
-      event.preventDefault();
-  
-      const nameInput = document.getElementById("name") as HTMLInputElement;
-      const ageInput = document.getElementById("age") as HTMLInputElement;
-      const emailInput = document.getElementById("email") as HTMLInputElement;
-      const passwordInput = document.getElementById("password") as HTMLInputElement;
-      const confirmPasswordInput = document.getElementById("confirmPassword") as HTMLInputElement;
-      const genderInput = document.getElementById("gender") as HTMLSelectElement;
-  
-      if (passwordInput.value !== confirmPasswordInput.value) {
-          Toast.showToast('Passwords do not match', 'error');
-          return;
-      }
-  
-      const userData = {
-        name: nameInput.value,
-        age: +ageInput.value,
-        email: emailInput.value,
-        password: passwordInput.value,
-        gender: genderInput.value,
-      };
+  static async handleFormSubmit(event: Event) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const nameInput = document.getElementById("name") as HTMLInputElement;
+    const ageInput = document.getElementById("age") as HTMLInputElement;
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const passwordInput = document.getElementById(
+      "password"
+    ) as HTMLInputElement;
+    const confirmPasswordInput = document.getElementById(
+      "confirmPassword"
+    ) as HTMLInputElement;
+    const genderInput = document.getElementById("gender") as HTMLSelectElement;
 
-      try {
-        await UserApi.createUser(userData);
-        Toast.showToast("Created new user", "success");
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      Toast.showToast("Passwords do not match", "error");
+      return;
+    }
 
-         // Clear the form fields after successful submission
-         nameInput.value = '';
-         ageInput.value = '';
-         emailInput.value = '';
-         passwordInput.value = '';
-         confirmPasswordInput.value = '';
-         genderInput.value = '';
+    const userData = {
+      name: nameInput.value,
+      age: +ageInput.value,
+      email: emailInput.value,
+      password: passwordInput.value,
+      gender: genderInput.value,
+    };
 
-         this.handleSearch();
-      } catch (err) {
-        Toast.showToast("An error occurred while creating the user. Please try again.", "error");
-      }
+    try {
+      await UserApi.createUser(userData);
+      Toast.showToast("Created new user", "success");
+
+      // Clear the form fields after successful submission
+      form.reset();
+    } catch (err) {
+      Toast.showToast(
+        "An error occurred while creating the user. Please try again.",
+        "error"
+      );
+    }
   }
 }

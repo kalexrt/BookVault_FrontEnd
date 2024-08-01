@@ -10,6 +10,8 @@ export class manageStaffActions {
   private static searchInput: HTMLInputElement;
   private static searchBtn: HTMLButtonElement;
   private static staffTable: HTMLDivElement;
+  private static addStaffBtn: HTMLButtonElement;
+  private static addStaffPopup: HTMLElement;
 
   private static pagination: Pagination;
   private static currentPage: number = 1;
@@ -23,6 +25,8 @@ export class manageStaffActions {
       "searchInput"
     ) as HTMLInputElement;
     this.searchBtn = document.getElementById("searchBtn") as HTMLButtonElement;
+    this.addStaffBtn = document.getElementById("addStaffBtn") as HTMLButtonElement;
+    this.addStaffPopup = document.getElementById("addStaffPopup") as HTMLElement;
     this.staffTable = document.getElementById("staffTable") as HTMLDivElement;
 
     //Initialize pagination
@@ -44,6 +48,18 @@ export class manageStaffActions {
         e.preventDefault();
         this.currentPage = 1;
         this.handleSearch();
+      }
+    });
+    // Open popup when Add Staff button is clicked
+    this.addStaffBtn.addEventListener('click', () => {
+      this.addStaffPopup.classList.remove('hidden');
+    });
+
+    // Close popup when clicking outside the form
+    this.addStaffPopup.addEventListener('click', (e) => {
+      if (e.target === this.addStaffPopup) {
+        this.handleSearch();
+        this.addStaffPopup.classList.add('hidden');
       }
     });
     this.form.addEventListener("submit", this.handleFormSubmit);
@@ -175,7 +191,6 @@ export class manageStaffActions {
     try {
       await StaffApi.createStaff(staffData);
       Toast.showToast("Created new staff", "success");
-      this.handleSearch();
 
        // Clear the form fields after successful submission
       form.reset();
