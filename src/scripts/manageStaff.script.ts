@@ -1,5 +1,7 @@
 import { StaffApi } from "../api/staff.api";
+import { UserApi } from "../api/user.api";
 import { user } from "../interfaces/user.interface";
+import { manageDeleteAndEditEventListeners } from "../utils/adminEditAndDeleteEvents";
 import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
 
@@ -42,6 +44,8 @@ export class manageStaffActions {
         this.handleSearch();
       }
     });
+    //to add event listeners to the action buttons before they render
+    manageDeleteAndEditEventListeners(manageStaffActions);
   }
 
   static async handleSearch() {
@@ -86,7 +90,7 @@ export class manageStaffActions {
       </tr>
     `;
 
-    const usersHTML = staffs
+    const staffsHTML = staffs
       .map(
         (staff: user) => `
         <tr>
@@ -94,12 +98,8 @@ export class manageStaffActions {
           <td class="p-2 border">${staff.name}</td>
           <td class="p-2 border">${staff.email}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline" onclick="openEditPopup(${JSON.stringify(
-              staff
-            )})">Edit</button>
-            <button class="text-red-500  font-bold hover:underline" onclick="deletebook(${
-              staff.id
-            })">Delete</button>
+            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(staff)}'>Edit</button>
+            <button class="text-red-500 font-bold hover:underline delete-btn" data-id="${staff.id}">Delete</button>
           </td>
         </tr>
       `
@@ -109,8 +109,41 @@ export class manageStaffActions {
     this.staffTable.innerHTML = `
       <table class="w-full border-collapse border">
         ${tableHeader}
-        ${usersHTML}
+        ${staffsHTML}
       </table>
     `;
+  }
+  static async deleteStaff(id: string) {
+    if (!confirm("Are you sure you want to delete this staff?")) {
+      return;
+    }
+    try {
+      await UserApi.deleteUser(id);
+      this.handleSearch();
+      Toast.showToast("User deleted successfully.", "success");
+    } catch (error) {
+      Toast.showToast(
+        "An error occurred while deleting the user. Please try again.",
+        "error"
+      );
+    }
+  }
+
+  static async openEditPopup(user: user) {
+    console.log(user)
+  }
+
+  static handleDeleteButton(target: HTMLElement) {
+    const staffId = target.dataset.id;
+    if (staffId) {
+      this.deleteStaff(staffId);
+    }
+  }
+  
+  static handleEditButton(target: HTMLElement) {
+    const userData = target.dataset.user;
+    if (userData) {
+      this.openEditPopup(JSON.parse(userData));
+    }
   }
 }

@@ -55,4 +55,14 @@ export class UserApi {
       handleApiError(err);
     }
   }
+
+  //delete user by id
+  static async deleteUser(id: string){
+    try{
+      const response = await instance.delete(`/users/${id}`);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
 }

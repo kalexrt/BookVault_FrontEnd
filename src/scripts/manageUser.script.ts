@@ -1,5 +1,6 @@
 import { UserApi } from "../api/user.api";
 import { user } from "../interfaces/user.interface";
+import { manageDeleteAndEditEventListeners } from "../utils/adminEditAndDeleteEvents";
 import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
 
@@ -20,13 +21,13 @@ export class manageUserActions {
     ) as HTMLInputElement;
     this.searchBtn = document.getElementById("searchBtn") as HTMLButtonElement;
     this.userTable = document.getElementById("userTable") as HTMLDivElement;
-
+    
     //Initialize pagination
     this.pagination = new Pagination("paginationContainer", (page) => {
       this.currentPage = page;
       this.handleSearch();
     });
-
+    
     this.handleSearch(); // Perform the search for initial page load
 
     //event listeners
@@ -42,6 +43,8 @@ export class manageUserActions {
         this.handleSearch();
       }
     });
+    //to add event listeners to the action buttons before they render
+    manageDeleteAndEditEventListeners(manageUserActions);
   }
 
   static async handleSearch() {
@@ -59,9 +62,7 @@ export class manageUserActions {
       const totalPages = Math.ceil(this.totalItems! / this.itemsPerPage);
       this.renderUsers(users.data);
       this.pagination.update(this.currentPage, totalPages);
-
       Toast.showToast("Users fetched successfully.", "success");
-
     } catch (error) {
       Toast.showToast(
         "An error occurred while fetching users. Please try again.",
@@ -93,12 +94,8 @@ export class manageUserActions {
           <td class="p-2 border">${user.name}</td>
           <td class="p-2 border">${user.email}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline" onclick="openEditPopup(${JSON.stringify(
-              user
-            )})">Edit</button>
-            <button class="text-red-500  font-bold hover:underline" onclick="deletebook(${
-              user.id
-            })">Delete</button>
+            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(user)}'>Edit</button>
+            <button class="text-red-500  font-bold hover:underline delete-btn" data-id="${user.id}">Delete</button>
           </td>
         </tr>
       `
@@ -111,5 +108,39 @@ export class manageUserActions {
         ${usersHTML}
       </table>
     `;
+  }
+
+  static async deleteUser(id: string) {
+    if (!confirm("Are you sure you want to delete this user?")) {
+      return;
+    }
+    try {
+      await UserApi.deleteUser(id);
+      this.handleSearch();
+      Toast.showToast("User deleted successfully.", "success");
+    } catch (error) {
+      Toast.showToast(
+        "An error occurred while deleting the user. Please try again.",
+        "error"
+      );
+    }
+  }
+
+  static async openEditPopup(user: user) {
+    console.log(user)
+  }
+
+  static handleDeleteButton(target: HTMLElement) {
+    const userId = target.dataset.id;
+    if (userId) {
+      this.deleteUser(userId);
+    }
+  }
+  
+  static handleEditButton(target: HTMLElement) {
+    const userData = target.dataset.user;
+    if (userData) {
+      this.openEditPopup(JSON.parse(userData));
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { BookApi } from "../api/book.api";
 import { book } from "../interfaces/book.interface";
+import { manageDeleteAndEditEventListeners } from "../utils/adminEditAndDeleteEvents";
 import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
 
@@ -42,6 +43,8 @@ export class manageBookActions {
         this.handleSearch();
       }
     });
+    //to add event listeners to the action buttons before they render
+    manageDeleteAndEditEventListeners(manageBookActions);
   }
 
   static async handleSearch() {
@@ -94,12 +97,8 @@ export class manageBookActions {
           <td class="p-2 border">${book.available_copies}</td>
           <td class="p-2 border">${book.total_copies}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline" onclick="openEditPopup(${JSON.stringify(
-              book
-            )})">Edit</button>
-            <button class="text-red-500  font-bold hover:underline" onclick="deletebook(${
-              book.id
-            })">Delete</button>
+            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(book)}'>Edit</button>
+            <button class="text-red-500 font-bold hover:underline delete-btn" data-id="${book.id}">Delete</button>
           </td>
         </tr>
       `
@@ -112,5 +111,38 @@ export class manageBookActions {
         ${booksHTML}
       </table>
     `;
+  }
+
+  static async deleteBook(id: string) {
+    if (!confirm("Are you sure you want to delete this Book?")) {
+      return;
+    }
+    try {
+      await BookApi.deleteBookById(id);
+      this.handleSearch();
+      Toast.showToast("Book deleted successfully.", "success");
+    } catch (error) {
+      Toast.showToast(
+        "An error occurred while deleting the user. Please try again.",
+        "error"
+      );
+    }
+  }
+  static async openEditPopup(book: book) {
+    console.log(book)
+  }
+
+  static handleDeleteButton(target: HTMLElement) {
+    const bookId = target.dataset.id;
+    if (bookId) {
+      this.deleteBook(bookId);
+    }
+  }
+  
+  static handleEditButton(target: HTMLElement) {
+    const userData = target.dataset.user;
+    if (userData) {
+      this.openEditPopup(JSON.parse(userData));
+    }
   }
 }
