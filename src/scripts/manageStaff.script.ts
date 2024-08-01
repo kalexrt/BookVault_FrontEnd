@@ -6,6 +6,7 @@ import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
 
 export class manageStaffActions {
+  private static form: HTMLFormElement;
   private static searchInput: HTMLInputElement;
   private static searchBtn: HTMLButtonElement;
   private static staffTable: HTMLDivElement;
@@ -17,6 +18,7 @@ export class manageStaffActions {
 
   static init() {
     //Initialize elements
+    this.form = document.getElementById("addStaffForm") as HTMLFormElement;
     this.searchInput = document.getElementById(
       "searchInput"
     ) as HTMLInputElement;
@@ -44,6 +46,8 @@ export class manageStaffActions {
         this.handleSearch();
       }
     });
+    this.form.addEventListener("submit", this.handleFormSubmit);
+
     //to add event listeners to the action buttons before they render
     manageDeleteAndEditEventListeners(manageStaffActions);
   }
@@ -64,8 +68,6 @@ export class manageStaffActions {
 
       this.renderUsers(staffs.data);
       this.pagination.update(this.currentPage, totalPages);
-
-      Toast.showToast("Staffs fetched successfully.", "success");
 
     } catch (error) {
       Toast.showToast(
@@ -146,4 +148,40 @@ export class manageStaffActions {
       this.openEditPopup(JSON.parse(userData));
     }
   }
+
+  static async handleFormSubmit(event: Event){
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const nameInput = document.getElementById("name") as HTMLInputElement;
+    const ageInput = document.getElementById("age") as HTMLInputElement;
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const passwordInput = document.getElementById("password") as HTMLInputElement;
+    const confirmPasswordInput = document.getElementById("confirmPassword") as HTMLInputElement;
+    const genderInput = document.getElementById("gender") as HTMLSelectElement;
+
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        Toast.showToast('Passwords do not match', 'error');
+        return;
+    }
+
+    const staffData = {
+      name: nameInput.value,
+      age: +ageInput.value,
+      email: emailInput.value,
+      password: passwordInput.value,
+      gender: genderInput.value,
+    };
+
+    try {
+      await StaffApi.createStaff(staffData);
+      Toast.showToast("Created new staff", "success");
+      this.handleSearch();
+
+       // Clear the form fields after successful submission
+      form.reset();
+
+    } catch (err) {
+      Toast.showToast("An error occurred while creating the staff. Please try again.", "error");
+    }
+}
 }

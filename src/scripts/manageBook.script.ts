@@ -5,6 +5,7 @@ import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
 
 export class manageBookActions {
+  private static form: HTMLFormElement;
   private static searchInput: HTMLInputElement;
   private static searchBtn: HTMLButtonElement;
   private static bookTable: HTMLDivElement;
@@ -16,6 +17,7 @@ export class manageBookActions {
 
   static init() {
     //Initialize elements
+    this.form = document.getElementById("addBookForm") as HTMLFormElement;
     this.searchInput = document.getElementById(
       "searchInput"
     ) as HTMLInputElement;
@@ -43,6 +45,7 @@ export class manageBookActions {
         this.handleSearch();
       }
     });
+    this.form.addEventListener("submit", this.handleFormSubmit);
     //to add event listeners to the action buttons before they render
     manageDeleteAndEditEventListeners(manageBookActions);
   }
@@ -63,7 +66,6 @@ export class manageBookActions {
 
       this.renderBooks(books.data);
       this.pagination.update(this.currentPage, totalPages);
-      Toast.showToast("Books fetched successfully.", "success");
     } catch (error) {
       Toast.showToast(
         "An error occurred while fetching books. Please try again.",
@@ -145,4 +147,51 @@ export class manageBookActions {
       this.openEditPopup(JSON.parse(userData));
     }
   }
+
+  static async handleFormSubmit(event: Event) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const imageInput = document.getElementById("image") as HTMLInputElement;
+    const titleInput = document.getElementById("title") as HTMLInputElement;
+    const isbnInput = document.getElementById("isbn") as HTMLInputElement;
+    const authorsInput = document.getElementById("authors") as HTMLInputElement;
+    const genresInput = document.getElementById("genres") as HTMLInputElement;
+    const publishedDateInput = document.getElementById("publishedDate") as HTMLInputElement;
+    const totalCopiesInput = document.getElementById("totalCopies") as HTMLInputElement;
+
+    const file = imageInput.files?.[0];
+    if (!file) {
+        Toast.showToast('Please select an image for the book', 'error');
+        return;
+    }
+
+    const authors = authorsInput.value.split(',').map(author => author.trim());
+    const genres = genresInput.value.split(',').map(genre => genre.trim());
+
+    try {
+        const formData = new FormData();
+
+        // Append each field manually
+        formData.append('photo', file);
+        formData.append('title', titleInput.value);
+        formData.append('isbn', isbnInput.value);
+        formData.append('publishedDate', publishedDateInput.value);
+        formData.append('totalCopies', totalCopiesInput.value);
+        // Append each author and genre individually
+        authors.forEach((author, index) => {
+          formData.append(`authors[${index}]`, author);
+        });
+        genres.forEach((genre, index) => {
+            formData.append(`genres[${index}]`, genre);
+        });
+
+        await BookApi.createBook(formData);
+
+        Toast.showToast("Added new book", "success");
+        // Clear the form fields after successful submission
+        form.reset();
+    } catch (err) {
+        Toast.showToast("An error occurred while adding the book. Please try again.", "error");
+    }
+}
 }

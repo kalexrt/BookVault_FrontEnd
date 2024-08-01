@@ -65,4 +65,24 @@ export class UserApi {
       handleApiError(err);
     }
   }
+
+  //create user
+  static async createUser(data: user){
+    try{
+      const response = await instance.post("/users", data);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
+
+  //edit user by id
+  static async editUser(id: string, data: user){
+    try{
+      const response = await instance.put(`/users/${id}`, data);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
 }

@@ -55,4 +55,14 @@ export class BookApi {
       handleApiError(err);
     }
   }
+
+  static async createBook(formData: FormData) {
+    // make the api call to create a new book
+    try{
+      const response = await instance.post(`/books`, formData);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
 }

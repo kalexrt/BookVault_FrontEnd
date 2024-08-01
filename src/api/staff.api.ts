@@ -1,3 +1,4 @@
+import { user } from "../interfaces/user.interface";
 import { handleApiError } from "../utils/handleApiError";
 import { instance } from "./base";
 
@@ -22,6 +23,16 @@ export class StaffApi{
 
       const response = await instance.get(`/librarian/?${params.toString()}`);
 
+      return response.data;
+    } catch (err) {
+      handleApiError(err);
+    }
+  }
+
+  //create staff
+  static async createStaff(staff: user) {
+    try {
+      const response = await instance.post("/librarian/", staff);
       return response.data;
     } catch (err) {
       handleApiError(err);

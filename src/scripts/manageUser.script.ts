@@ -5,6 +5,7 @@ import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
 
 export class manageUserActions {
+  private static form: HTMLFormElement;
   private static searchInput: HTMLInputElement;
   private static searchBtn: HTMLButtonElement;
   private static userTable: HTMLDivElement;
@@ -16,6 +17,7 @@ export class manageUserActions {
 
   static init() {
     //Initialize elements
+    this.form = document.getElementById("addUserForm") as HTMLFormElement;
     this.searchInput = document.getElementById(
       "searchInput"
     ) as HTMLInputElement;
@@ -43,6 +45,7 @@ export class manageUserActions {
         this.handleSearch();
       }
     });
+    this.form.addEventListener("submit", this.handleFormSubmit);
     //to add event listeners to the action buttons before they render
     manageDeleteAndEditEventListeners(manageUserActions);
   }
@@ -62,7 +65,6 @@ export class manageUserActions {
       const totalPages = Math.ceil(this.totalItems! / this.itemsPerPage);
       this.renderUsers(users.data);
       this.pagination.update(this.currentPage, totalPages);
-      Toast.showToast("Users fetched successfully.", "success");
     } catch (error) {
       Toast.showToast(
         "An error occurred while fetching users. Please try again.",
@@ -142,5 +144,46 @@ export class manageUserActions {
     if (userData) {
       this.openEditPopup(JSON.parse(userData));
     }
+  }
+
+  static async handleFormSubmit(event: Event){
+      event.preventDefault();
+  
+      const nameInput = document.getElementById("name") as HTMLInputElement;
+      const ageInput = document.getElementById("age") as HTMLInputElement;
+      const emailInput = document.getElementById("email") as HTMLInputElement;
+      const passwordInput = document.getElementById("password") as HTMLInputElement;
+      const confirmPasswordInput = document.getElementById("confirmPassword") as HTMLInputElement;
+      const genderInput = document.getElementById("gender") as HTMLSelectElement;
+  
+      if (passwordInput.value !== confirmPasswordInput.value) {
+          Toast.showToast('Passwords do not match', 'error');
+          return;
+      }
+  
+      const userData = {
+        name: nameInput.value,
+        age: +ageInput.value,
+        email: emailInput.value,
+        password: passwordInput.value,
+        gender: genderInput.value,
+      };
+
+      try {
+        await UserApi.createUser(userData);
+        Toast.showToast("Created new user", "success");
+
+         // Clear the form fields after successful submission
+         nameInput.value = '';
+         ageInput.value = '';
+         emailInput.value = '';
+         passwordInput.value = '';
+         confirmPasswordInput.value = '';
+         genderInput.value = '';
+
+         this.handleSearch();
+      } catch (err) {
+        Toast.showToast("An error occurred while creating the user. Please try again.", "error");
+      }
   }
 }
