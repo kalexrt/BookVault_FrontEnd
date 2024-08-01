@@ -1,3 +1,4 @@
+import { book } from "../interfaces/book.interface";
 import { handleApiError } from "../utils/handleApiError";
 import { instance } from "./base";
 
@@ -60,6 +61,15 @@ export class BookApi {
     // make the api call to create a new book
     try{
       const response = await instance.post(`/books`, formData);
+      return response.data;
+    }catch(err){
+      handleApiError(err);
+    }
+  }
+
+  static async updateBook(id: string, book:book) {
+    try{
+      const response = await instance.put(`/books/${id}`, book);
       return response.data;
     }catch(err){
       handleApiError(err);

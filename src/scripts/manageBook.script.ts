@@ -116,12 +116,12 @@ export class manageBookActions {
           <td class="p-2 border">${book.available_copies}</td>
           <td class="p-2 border">${book.total_copies}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(
+            <button class="hover:bg-yellow-500 edit-btn" data-user='${JSON.stringify(
               book
-            )}'>Edit</button>
-            <button class="text-red-500 font-bold hover:underline delete-btn" data-id="${
+            )}'>📝</button>
+            <button class="hover:bg-red-500 delete-btn" data-id="${
               book.id
-            }">Delete</button>
+            }">🗑</button>
           </td>
         </tr>
       `

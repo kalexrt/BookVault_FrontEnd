@@ -12,6 +12,7 @@ export class manageStaffActions {
   private static staffTable: HTMLDivElement;
   private static addStaffBtn: HTMLButtonElement;
   private static addStaffPopup: HTMLElement;
+  private static editStaffPopup: HTMLElement;
 
   private static pagination: Pagination;
   private static currentPage: number = 1;
@@ -25,9 +26,16 @@ export class manageStaffActions {
       "searchInput"
     ) as HTMLInputElement;
     this.searchBtn = document.getElementById("searchBtn") as HTMLButtonElement;
-    this.addStaffBtn = document.getElementById("addStaffBtn") as HTMLButtonElement;
-    this.addStaffPopup = document.getElementById("addStaffPopup") as HTMLElement;
+    this.addStaffBtn = document.getElementById(
+      "addStaffBtn"
+    ) as HTMLButtonElement;
+    this.addStaffPopup = document.getElementById(
+      "addStaffPopup"
+    ) as HTMLElement;
     this.staffTable = document.getElementById("staffTable") as HTMLDivElement;
+    this.editStaffPopup = document.getElementById(
+      "editStaffPopup"
+    ) as HTMLElement;
 
     //Initialize pagination
     this.pagination = new Pagination("paginationContainer", (page) => {
@@ -51,15 +59,21 @@ export class manageStaffActions {
       }
     });
     // Open popup when Add Staff button is clicked
-    this.addStaffBtn.addEventListener('click', () => {
-      this.addStaffPopup.classList.remove('hidden');
+    this.addStaffBtn.addEventListener("click", () => {
+      this.addStaffPopup.classList.remove("hidden");
     });
 
     // Close popup when clicking outside the form
-    this.addStaffPopup.addEventListener('click', (e) => {
+    this.addStaffPopup.addEventListener("click", (e) => {
       if (e.target === this.addStaffPopup) {
         this.handleSearch();
-        this.addStaffPopup.classList.add('hidden');
+        this.addStaffPopup.classList.add("hidden");
+      }
+    });
+    // Close edit user popup when clicking outside the form
+    this.editStaffPopup.addEventListener("click", (e) => {
+      if (e.target === this.editStaffPopup) {
+        this.editStaffPopup.classList.add("hidden");
       }
     });
     this.form.addEventListener("submit", this.handleFormSubmit);
@@ -84,7 +98,6 @@ export class manageStaffActions {
 
       this.renderUsers(staffs.data);
       this.pagination.update(this.currentPage, totalPages);
-
     } catch (error) {
       Toast.showToast(
         "An error occurred while fetching staffs. Please try again.",
@@ -116,8 +129,12 @@ export class manageStaffActions {
           <td class="p-2 border">${staff.name}</td>
           <td class="p-2 border">${staff.email}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(staff)}'>Edit</button>
-            <button class="text-red-500 font-bold hover:underline delete-btn" data-id="${staff.id}">Delete</button>
+            <button class="hover:bg-yellow-500 edit-btn" data-user='${JSON.stringify(
+              staff
+            )}'>📝</button>
+            <button class="hover:bg-red-500 delete-btn" data-id="${
+              staff.id
+            }">🗑</button>
           </td>
         </tr>
       `
@@ -147,37 +164,30 @@ export class manageStaffActions {
     }
   }
 
-  static async openEditPopup(user: user) {
-    console.log(user)
-  }
-
   static handleDeleteButton(target: HTMLElement) {
     const staffId = target.dataset.id;
     if (staffId) {
       this.deleteStaff(staffId);
     }
   }
-  
-  static handleEditButton(target: HTMLElement) {
-    const userData = target.dataset.user;
-    if (userData) {
-      this.openEditPopup(JSON.parse(userData));
-    }
-  }
 
-  static async handleFormSubmit(event: Event){
+  static async handleFormSubmit(event: Event) {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const nameInput = document.getElementById("name") as HTMLInputElement;
     const ageInput = document.getElementById("age") as HTMLInputElement;
     const emailInput = document.getElementById("email") as HTMLInputElement;
-    const passwordInput = document.getElementById("password") as HTMLInputElement;
-    const confirmPasswordInput = document.getElementById("confirmPassword") as HTMLInputElement;
+    const passwordInput = document.getElementById(
+      "password"
+    ) as HTMLInputElement;
+    const confirmPasswordInput = document.getElementById(
+      "confirmPassword"
+    ) as HTMLInputElement;
     const genderInput = document.getElementById("gender") as HTMLSelectElement;
 
     if (passwordInput.value !== confirmPasswordInput.value) {
-        Toast.showToast('Passwords do not match', 'error');
-        return;
+      Toast.showToast("Passwords do not match", "error");
+      return;
     }
 
     const staffData = {
@@ -192,11 +202,97 @@ export class manageStaffActions {
       await StaffApi.createStaff(staffData);
       Toast.showToast("Created new staff", "success");
 
-       // Clear the form fields after successful submission
+      // Clear the form fields after successful submission
       form.reset();
-
     } catch (err) {
-      Toast.showToast("An error occurred while creating the staff. Please try again.", "error");
+      Toast.showToast(
+        "An error occurred while creating the staff. Please try again.",
+        "error"
+      );
     }
-}
+  }
+
+  static handleEditButton(target: HTMLElement) {
+    const userData = target.dataset.user;
+    const user = JSON.parse(userData!);
+
+    const editNameInput = document.getElementById(
+      "editName"
+    ) as HTMLInputElement;
+    const editEmailInput = document.getElementById(
+      "editEmail"
+    ) as HTMLInputElement;
+    const editAgeInput = document.getElementById(
+      "editAge"
+    ) as HTMLInputElement;
+    const editGenderSelect = document.getElementById(
+      "editGender"
+    ) as HTMLSelectElement;
+    const submitButton = document.getElementById(
+      "editSubmit"
+    ) as HTMLButtonElement ;
+    const editStaffPopup = document.getElementById(
+      "editStaffPopup"
+    ) as HTMLElement ;
+
+
+    editNameInput.value = user.name;
+    editEmailInput.value = user.email;
+    editAgeInput.value = user.age.toString();
+    editGenderSelect.value = user.gender;
+
+    // Remove any existing event listeners to prevent duplicates
+    submitButton.removeEventListener("click", this.handleEditSubmitWrapper);
+
+    // Add a new event listener
+    submitButton.addEventListener("click", this.handleEditSubmitWrapper);
+
+    // Store the userId for later use
+    submitButton.dataset.userId = user.id;
+
+    editStaffPopup.classList.remove("hidden");
+  }
+
+   // Wrapper function to handle the event and pass the userId
+   private static handleEditSubmitWrapper = (e: Event) => {
+    const submitButton = e.target as HTMLButtonElement;
+    const userId = submitButton.dataset.userId;
+    if (userId) {
+      this.handleEditSubmit(e, userId);
+    }
+  };
+
+  static async handleEditSubmit(event: Event, staffId: string) {
+    event.preventDefault();
+    const form = document.getElementById("editStaffForm") as HTMLFormElement;
+    const popUp = document.getElementById("editStaffPopup") as HTMLElement;
+    const nameInput = document.getElementById("editName") as HTMLInputElement;
+    const emailInput = document.getElementById("editEmail") as HTMLInputElement;
+    const ageInput = document.getElementById("editAge") as HTMLInputElement;
+    const genderSelect = document.getElementById("editGender") as HTMLSelectElement;
+    const passwordInput = document.getElementById("editPassword") as HTMLInputElement;
+
+    const userData = {
+      name: nameInput.value,
+      email: emailInput.value,
+      age: +ageInput.value,
+      gender: genderSelect.value,
+      password: passwordInput.value,
+    };
+
+    try {
+      await UserApi.editUser(staffId,userData)
+      Toast.showToast("Staff updated successfully.", "success");
+      //reset form, remove popup and refresh search
+      form.reset();
+      popUp.classList.add("hidden");
+      manageStaffActions.handleSearch();
+    }catch(err){
+      Toast.showToast(
+        "An error occurred while updating the user. Please try again.",
+        "error"
+      );
+    }
+  }
+
 }

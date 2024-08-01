@@ -10,6 +10,7 @@ export class manageUserActions {
   private static searchBtn: HTMLButtonElement;
   private static addUserBtn: HTMLButtonElement;
   private static addUserPopup: HTMLElement;
+  private static editUserPopup: HTMLElement;
   private static userTable: HTMLDivElement;
 
   private static pagination: Pagination;
@@ -28,6 +29,9 @@ export class manageUserActions {
       "addUserBtn"
     ) as HTMLButtonElement;
     this.addUserPopup = document.getElementById("addUserPopup") as HTMLElement;
+    this.editUserPopup = document.getElementById(
+      "editUserPopup"
+    ) as HTMLElement;
     this.userTable = document.getElementById("userTable") as HTMLDivElement;
 
     //Initialize pagination
@@ -56,6 +60,12 @@ export class manageUserActions {
       }
     });
 
+    // Close edit user popup when clicking outside the form
+    this.editUserPopup.addEventListener("click", (e) => {
+      if (e.target === this.editUserPopup) {
+        this.editUserPopup.classList.add("hidden");
+      }
+    });
     this.searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -63,6 +73,7 @@ export class manageUserActions {
         this.handleSearch();
       }
     });
+
     this.form.addEventListener("submit", this.handleFormSubmit);
     //to add event listeners to the action buttons before they render
     manageDeleteAndEditEventListeners(manageUserActions);
@@ -114,10 +125,10 @@ export class manageUserActions {
           <td class="p-2 border">${user.name}</td>
           <td class="p-2 border">${user.email}</td>
           <td class="p-2 border flex space-x-2">
-            <button class="text-yellow-500 font-bold hover:underline edit-btn" data-user='${JSON.stringify(
+            <button class="hover:bg-yellow-500 edit-btn" data-user='${JSON.stringify(
               user
             )}'>📝</button>
-            <button class="text-red-500 font-bold hover:underline delete-btn" data-id="${
+            <button class="hover:bg-red-500 delete-btn" data-id="${
               user.id
             }">🗑</button>
           </td>
@@ -150,21 +161,10 @@ export class manageUserActions {
     }
   }
 
-  static async openEditPopup(user: user) {
-    console.log(user);
-  }
-
   static handleDeleteButton(target: HTMLElement) {
     const userId = target.dataset.id;
     if (userId) {
       this.deleteUser(userId);
-    }
-  }
-
-  static handleEditButton(target: HTMLElement) {
-    const userData = target.dataset.user;
-    if (userData) {
-      this.openEditPopup(JSON.parse(userData));
     }
   }
 
@@ -204,6 +204,96 @@ export class manageUserActions {
     } catch (err) {
       Toast.showToast(
         "An error occurred while creating the user. Please try again.",
+        "error"
+      );
+    }
+  }
+
+  static handleEditButton(target: HTMLElement) {
+    const userData = target.dataset.user;
+    if (!userData) {
+      console.error("No user data found");
+      return;
+    }
+
+    const user = JSON.parse(userData);
+
+    const editNameInput = document.getElementById(
+      "editName"
+    ) as HTMLInputElement;
+    const editEmailInput = document.getElementById(
+      "editEmail"
+    ) as HTMLInputElement;
+    const editAgeInput = document.getElementById(
+      "editAge"
+    ) as HTMLInputElement;
+    const editGenderSelect = document.getElementById(
+      "editGender"
+    ) as HTMLSelectElement;
+    const submitButton = document.getElementById(
+      "editSubmit"
+    ) as HTMLButtonElement ;
+    const editUserPopup = document.getElementById(
+      "editUserPopup"
+    ) as HTMLElement ;
+
+
+    editNameInput.value = user.name;
+    editEmailInput.value = user.email;
+    editAgeInput.value = user.age.toString();
+    editGenderSelect.value = user.gender;
+
+    // Remove any existing event listeners to prevent duplicates
+    submitButton.removeEventListener("click", this.handleEditSubmitWrapper);
+
+    // Add a new event listener
+    submitButton.addEventListener("click", this.handleEditSubmitWrapper);
+
+    // Store the userId for later use
+    submitButton.dataset.userId = user.id;
+
+    editUserPopup.classList.remove("hidden");
+  }
+
+  // Wrapper function to handle the event and pass the userId
+  private static handleEditSubmitWrapper = (e: Event) => {
+    const submitButton = e.target as HTMLButtonElement;
+    const userId = submitButton.dataset.userId;
+    if (userId) {
+      this.handleEditSubmit(e, userId);
+    } else {
+      console.error("User ID not found");
+    }
+  };
+
+  static async handleEditSubmit(event: Event, userId: string) {
+    event.preventDefault();
+    const form = document.getElementById("editUserForm") as HTMLFormElement;
+    const popUp = document.getElementById("editUserPopup") as HTMLElement;
+    const nameInput = document.getElementById("editName") as HTMLInputElement;
+    const emailInput = document.getElementById("editEmail") as HTMLInputElement;
+    const ageInput = document.getElementById("editAge") as HTMLInputElement;
+    const genderSelect = document.getElementById("editGender") as HTMLSelectElement;
+    const passwordInput = document.getElementById("editPassword") as HTMLInputElement;
+
+    const userData = {
+      name: nameInput.value,
+      email: emailInput.value,
+      age: +ageInput.value,
+      gender: genderSelect.value,
+      password: passwordInput.value,
+    };
+
+    try {
+      await UserApi.editUser(userId,userData)
+      Toast.showToast("User updated successfully.", "success");
+      //reset form, remove popup and refresh search
+      form.reset();
+      popUp.classList.add("hidden");
+      manageUserActions.handleSearch();
+    }catch(err){
+      Toast.showToast(
+        "An error occurred while updating the user. Please try again.",
         "error"
       );
     }
