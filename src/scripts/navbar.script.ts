@@ -27,7 +27,7 @@ export class NavBarActions {
     if (aboutUsBtn)aboutUsBtn.addEventListener("click", NavBarActions.handleAboutUs);
   };
   //dynamic navbar depending on login
-  static updateNavbarForLoggedInUser() {
+  static async updateNavbarForLoggedInUser() {
     const accessToken = localStorage.getItem("accessToken") as string;
     const notificationIcon = document.getElementById(
       "notificationBtn"
