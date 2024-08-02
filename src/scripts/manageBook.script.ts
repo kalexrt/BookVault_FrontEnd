@@ -301,8 +301,9 @@ export class manageBookActions {
       Toast.showToast("Added new book", "success");
       // Clear the form fields after successful submission
       form.reset();
+      manageBookActions.addBookPopup.classList.add("hidden");
+      manageBookActions.handleSearch();
     } catch (err) {
-      console.log(err)
       Toast.showToast(
         "An error occurred while adding the book. Please try again.",
         "error"

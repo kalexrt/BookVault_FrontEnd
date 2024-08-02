@@ -1,5 +1,6 @@
 import { BorrowApi } from "../api/borrow.api";
 import { borrow } from "../interfaces/borrow.interface";
+import { manageDeleteAndEditEventListeners } from "../utils/adminEditAndDeleteEvents";
 import { formatDate } from "../utils/formatDate";
 import { Toast } from "../utils/toast";
 import { Pagination } from "./pagination.script";
@@ -11,6 +12,7 @@ export class manageBorrowActions {
   private static issueBookBtn: HTMLButtonElement;
   private static issueBookPopup: HTMLElement;
   private static searchType: HTMLSelectElement;
+  private static issueForm: HTMLFormElement;
 
   private static pagination: Pagination;
   private static currentPage: number = 1;
@@ -33,6 +35,9 @@ export class manageBorrowActions {
     this.searchType = document.getElementById(
       "searchType"
     ) as HTMLSelectElement;
+    this.issueForm = document.getElementById(
+      "issueBookForm"
+    ) as HTMLFormElement;
 
     //Initialize pagination
     this.pagination = new Pagination("paginationContainer", (page) => {
@@ -72,6 +77,9 @@ export class manageBorrowActions {
         this.issueBookPopup.classList.add("hidden");
       }
     });
+    this.issueForm.addEventListener("submit", this.handleIssueFormSubmit);
+    //to add event listeners to the action buttons before they render
+    manageDeleteAndEditEventListeners(manageBorrowActions);
   }
 
   static async handleSearch() {
@@ -146,5 +154,45 @@ export class manageBorrowActions {
         ${borrowsHTML}
       </table>
     `;
+  }
+
+  static async handleIssueFormSubmit(event: Event) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const bookInput = document.getElementById("bookId") as HTMLInputElement;
+    const userInput = document.getElementById("userId") as HTMLInputElement;
+    const data = {
+      bookId: bookInput.value,
+      userId: userInput.value,
+    };
+    try {
+      await BorrowApi.issueBook(data);
+      Toast.showToast("Book issued successfully.", "success");
+      // Clear the form fields after successful submission
+      form.reset();
+      manageBorrowActions.handleSearch();
+      manageBorrowActions.issueBookPopup.classList.add("hidden");
+    } catch (error) {
+      Toast.showToast(
+        "An error occurred while issuing book. Please try again.",
+        "error"
+      );
+    }
+  }
+
+  static async handleDeleteButton(target: HTMLElement) {
+    const borrowId = target.dataset.id;
+    if (borrowId) {
+      try{
+        await BorrowApi.returnBook(borrowId);
+        Toast.showToast("Book returned successfully.", "success");
+        this.handleSearch();
+      }catch{
+        Toast.showToast(
+          "An error occurred while returning the book. Please try again.",
+          "error"
+        );
+      }
+    }
   }
 }

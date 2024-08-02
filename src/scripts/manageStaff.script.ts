@@ -204,6 +204,8 @@ export class manageStaffActions {
 
       // Clear the form fields after successful submission
       form.reset();
+      manageStaffActions.handleSearch();
+      manageStaffActions.addStaffPopup.classList.add("hidden");
     } catch (err) {
       Toast.showToast(
         "An error occurred while creating the staff. Please try again.",

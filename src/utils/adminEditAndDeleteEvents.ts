@@ -8,7 +8,7 @@ export function manageDeleteAndEditEventListeners(actionHandler: ActionHandler) 
     if (target.classList.contains("delete-btn")) {
       actionHandler.handleDeleteButton(target);
     } else if (target.classList.contains("edit-btn")) {
-      actionHandler.handleEditButton(target);
+      if(actionHandler.handleEditButton) actionHandler.handleEditButton(target);
     }
   };
   
