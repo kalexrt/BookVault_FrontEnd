@@ -1,5 +1,4 @@
 import { togglePassword } from "../utils/togglePassword";
-import { AxiosError } from "axios";
 import { AuthApi } from "../api/auth.api";
 import { displayResponseErrors } from "../utils/errorHandler";
 import { Toast } from "../utils/toast";
@@ -32,36 +31,34 @@ export class LoginActions {
       "password"
     ) as HTMLInputElement;
     try {
-      const response = await AuthApi.login({
-        email: emailInput.value,
-        password: passwordInput.value,
-      });
-      //set access token
-      localStorage.setItem("accessToken", response.accessToken);
-
-      const user = await UserApi.getMyProfile();
-      if (user.roles.includes("SuperAdmin")) {
-        //redirect to admin dashboard
-        window.history.pushState({}, "", "/#/manage-user")
-      } else if (user.roles.includes("Librarian")) {
-        //redirect to manage book
-        window.history.pushState({}, "", "/#/manage-book")
-      } else {
-        //redirect to home
-        window.history.pushState({}, "", "/#/home");
-      }
-      Router.loadContent();
+      LoginActions.login(emailInput.value, passwordInput.value);
     } catch (err) {
-      if (err instanceof AxiosError) {
-        const errorMessage = err.response?.data?.message || err.message;
-        displayResponseErrors(errorMessage);
-        Toast.showToast(errorMessage, "error");
-        //clear inputs
-        emailInput.value = "";
-        passwordInput.value = "";
-      } else {
-        Toast.showToast("An unexpected error occurred", "error");
-      }
+      displayResponseErrors("invalid email or password");
+      Toast.showToast("invalid email or password", "error");
     }
+  }
+
+  //actually login and redirect depending upon role
+  static async login(email: string, password: string) {
+    const response = await AuthApi.login({
+      email: email,
+      password: password,
+    });
+    if (!response) throw new Error("invalid email or password");
+    //set access token
+    localStorage.setItem("accessToken", response.accessToken);
+
+    const user = await UserApi.getMyProfile();
+    if (user.roles.includes("SuperAdmin")) {
+      //redirect to admin dashboard
+      window.history.pushState({}, "", "/#/manage-user");
+    } else if (user.roles.includes("Librarian")) {
+      //redirect to manage book
+      window.history.pushState({}, "", "/#/manage-book");
+    } else {
+      //redirect to home
+      window.history.pushState({}, "", "/#/home");
+    }
+    Router.loadContent();
   }
 }

@@ -2,12 +2,11 @@ import { user } from "../interfaces/user.interface";
 import { passwordValidator } from "../utils/confirmPasswordValidator";
 import { Toast } from "../utils/toast";
 import { togglePassword } from "../utils/togglePassword";
-import { AxiosError } from "axios";
 import { AuthApi } from "../api/auth.api";
-import { Router } from "../router";
+import { LoginActions } from "./login.script";
 
 export class RegisterActions {
-  static init(){
+  static init() {
     const form = document.getElementById("signupForm") as HTMLFormElement;
 
     form.addEventListener("submit", this.handleFormSubmit);
@@ -34,7 +33,7 @@ export class RegisterActions {
 
     //confirm password validation
     passwordValidator();
-  };
+  }
 
   //after form is submitted
   static async handleFormSubmit(event: Event) {
@@ -46,6 +45,7 @@ export class RegisterActions {
     const passwordInput = document.getElementById(
       "password"
     ) as HTMLInputElement;
+    const confirmPasswordInput = document.getElementById("confirmPassword") as HTMLInputElement;
     const genderInput = document.getElementById("gender") as HTMLSelectElement;
 
     const data: user = {
@@ -59,17 +59,17 @@ export class RegisterActions {
     try {
       await AuthApi.register(data);
       Toast.showToast("Registration successful", "success");
-      window.history.pushState({}, "", "/#/login");
-      Router.loadContent();
+      //autologin
+      LoginActions.login(emailInput.value, passwordInput.value);
     } catch (err) {
-      if (err instanceof AxiosError) {
-        const errorMessage = err.response?.data?.message || err.message;
-        Toast.showToast(errorMessage, "error");
-        emailInput.value = "";
-        passwordInput.value = "";
-      } else {
-        Toast.showToast("An unexpected error occurred", "error");
-      }
+        nameInput.value=""
+        ageInput.value = ""
+        emailInput.value=""
+        passwordInput.value=""
+        genderInput.value=""
+        confirmPasswordInput.value=""
+
+        Toast.showToast("Error registering user", "error");
     }
   }
 }

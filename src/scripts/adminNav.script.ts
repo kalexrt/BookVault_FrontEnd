@@ -28,7 +28,6 @@ export class AdminNavActions {
         elem.classList.remove("hidden");
       });
     } else if (user.roles.includes("Librarian")) {
-        console.log("test")
       // Librarian gets access to librarian-only sections, hide admin-only sections
       document.querySelectorAll(".admin-only").forEach((elem) => {
         elem.classList.add("hidden");
