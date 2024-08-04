@@ -1,31 +1,41 @@
 import { Router } from "../router";
+import { NotificationActions } from "./notification.script";
 
 export class NavBarActions {
-  static init(){
+  static init() {
     //for home
     const homeBtn = document.getElementById("homeBtn") as HTMLElement;
-    if (homeBtn)homeBtn.addEventListener("click", NavBarActions.handleHome);
+    if (homeBtn) homeBtn.addEventListener("click", NavBarActions.handleHome);
 
     //for logout
     const logoutBtn = document.getElementById("logoutBtn") as HTMLElement;
-    if (logoutBtn)logoutBtn.addEventListener("click", NavBarActions.handleLogout);
+    if (logoutBtn)
+      logoutBtn.addEventListener("click", NavBarActions.handleLogout);
 
     //for login
     const loginBtn = document.getElementById("loginBtn") as HTMLElement;
-    if (loginBtn)loginBtn.addEventListener("click", NavBarActions.handleLogin);
-    
+    if (loginBtn) loginBtn.addEventListener("click", NavBarActions.handleLogin);
+
     //for profile
     const profileBtn = document.getElementById("profileBtn") as HTMLElement;
-    if (profileBtn)profileBtn.addEventListener("click", NavBarActions.handleProfile);
+    if (profileBtn)
+      profileBtn.addEventListener("click", NavBarActions.handleProfile);
 
     //for notification
-    const notificationBtn = document.getElementById("notificationBtn") as HTMLElement;
-    if (notificationBtn)notificationBtn.addEventListener("click", NavBarActions.handleNotification);
+    const notificationBtn = document.getElementById(
+      "notificationBtn"
+    ) as HTMLElement;
+    if (notificationBtn)
+      notificationBtn.addEventListener(
+        "click",
+        NavBarActions.handleNotification
+      );
 
     //for about us
     const aboutUsBtn = document.getElementById("aboutUsBtn") as HTMLElement;
-    if (aboutUsBtn)aboutUsBtn.addEventListener("click", NavBarActions.handleAboutUs);
-  };
+    if (aboutUsBtn)
+      aboutUsBtn.addEventListener("click", NavBarActions.handleAboutUs);
+  }
   //dynamic navbar depending on login
   static async updateNavbarForLoggedInUser() {
     const accessToken = localStorage.getItem("accessToken") as string;
@@ -75,6 +85,9 @@ export class NavBarActions {
 
   //handle notification button
   static handleNotification() {
+    const dropdown = document.getElementById("notificationDropdown");
+    if (dropdown) dropdown.classList.toggle("hidden");
+    NotificationActions.handleSearch();
   }
 
   //handle about us button
