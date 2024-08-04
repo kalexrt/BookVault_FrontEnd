@@ -1,7 +1,7 @@
-<div class="bg-white min-h-screen flex items-center justify-center">
-  <div class="bg-blue-400 text-white p-8 rounded-lg shadow-lg max-w-md w-full">
+<div class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white text-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
     <h1 class="text-3xl font-bold mb-6 text-center">
-      <span class="text-white">Book</span
+      <span class="text-black">Book</span
       ><span class="text-orange-500">Vault</span>
     </h1>
     <div class="space-y-4">
@@ -38,19 +38,25 @@
         <span id="accountCreationDate">01-01-1972</span>
       </div>
     </div>
-    <div class="mt-8 text-center">
+    <div class="mt-8 flex justify-center space-x-4">
       <button
         id="editProfileBtn"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 mr-8"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400"
       >
         Edit Profile
       </button>
       <button
         id="deleteProfileBtn"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400"
       >
         Delete Profile
       </button>
+      <a
+        href="/#/review-books"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg shadow-sm transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 text-center"
+      >
+        Review Books
+      </a>
     </div>
   </div>
 
@@ -59,7 +65,7 @@
     id="editProfileWindow"
     class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50"
   >
-    <div class="bg-blue-400 text-black p-8 rounded-lg shadow-lg w-96 max-w-md">
+    <div class="bg-white text-gray-800 p-8 rounded-lg shadow-lg w-96 max-w-md">
       <h2 class="text-3xl font-bold mb-6 text-center">Edit Profile</h2>
       <form id="editProfileForm" class="space-y-4">
         <div>
@@ -67,7 +73,7 @@
           <input
             type="text"
             id="editName"
-            class="w-full p-2 bg-blue-300 text-black placeholder-gray-500 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            class="w-full p-2 bg-gray-100 text-gray-800 placeholder-gray-500 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             placeholder="Name"
           />
         </div>
@@ -79,7 +85,7 @@
           <input
             type="text"
             id="editGender"
-            class="w-full p-2 bg-blue-300 text-black placeholder-gray-500 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            class="w-full p-2 bg-gray-100 text-gray-800 placeholder-gray-500 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             placeholder="Gender"
           />
         </div>
@@ -89,7 +95,7 @@
           <input
             type="email"
             id="editEmail"
-            class="w-full p-2 bg-blue-300 text-black placeholder-gray-500 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            class="w-full p-2 bg-gray-100 text-gray-800 placeholder-gray-500 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             placeholder="Email"
           />
         </div>
@@ -99,7 +105,7 @@
           <input
             type="number"
             id="editAge"
-            class="w-full p-2 bg-blue-300 text-black placeholder-gray-500 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            class="w-full p-2 bg-gray-100 text-gray-800 placeholder-gray-500 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             placeholder="Age"
           />
         </div>
@@ -111,7 +117,7 @@
           <input
             type="password"
             id="editPassword"
-            class="w-full p-2 bg-blue-300 text-black placeholder-gray-500 border border-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+            class="w-full p-2 bg-gray-100 text-gray-800 placeholder-gray-500 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             placeholder="Password"
             autocomplete="on"
           />
@@ -121,13 +127,13 @@
           <button
             type="button"
             id="cancelEditProfileBtn"
-            class="bg-blue-500 hover:bg-blue-600 text-black font-bold py-2 px-4 rounded transition duration-300"
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-300"
           >
             Cancel
           </button>
           <button
             id="saveProfileBtn"
-            class="bg-orange-500 hover:bg-orange-600 text-black font-bold py-2 px-4 rounded transition duration-300"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
           >
             Save
           </button>

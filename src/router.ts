@@ -12,6 +12,7 @@ import { ManageBorrow } from "./loaders/manageBorrow.loader";
 import { ManageUser } from "./loaders/manageUser.loader";
 import { Route } from "./interfaces/route.interface";
 import { Stats } from "./loaders/stats.loader";
+import { ReviewBookPage } from "./loaders/reviewBook.loader";
 
 const routes: Route[] = [
   { path: "#/login", component: LoginPage },
@@ -25,7 +26,8 @@ const routes: Route[] = [
   { path: "#/manage-book", component: ManageBook },
   { path: "#/manage-borrow", component: ManageBorrow },
   { path: "#/manage-user", component: ManageUser },
-  { path: "#/stats", component: Stats}
+  { path: "#/stats", component: Stats },
+  { path: "#/review-books", component: ReviewBookPage },
 ];
 
 export class Router {
