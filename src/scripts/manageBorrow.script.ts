@@ -181,6 +181,9 @@ export class manageBorrowActions {
   }
 
   static async handleDeleteButton(target: HTMLElement) {
+    if (!confirm("Are you sure that this user returned this book")) {
+      return;
+    }
     const borrowId = target.dataset.id;
     if (borrowId) {
       try{

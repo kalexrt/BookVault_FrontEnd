@@ -6,7 +6,7 @@ export interface book {
     genres?: string[];
     publishedDate?: string;
     rating?: number;
-    totalReviews?: number;
+    total_reviews?: number;
     total_copies?: number;
     available_copies?: number;
     image_link?: string;

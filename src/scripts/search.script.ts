@@ -133,7 +133,7 @@ export class SearchActions {
             book.rating
               ? `<p class="text-sm text-yellow-500">Rating: ${book.rating.toFixed(
                   1
-                )}/5 (${book.totalReviews} reviews)</p>`
+                )}/5 (${book.total_reviews} reviews)</p>`
               : ""
           }
           <p class="text-sm text-green-600">Available: ${book.available_copies}/${

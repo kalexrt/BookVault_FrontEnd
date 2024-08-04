@@ -41,7 +41,7 @@ export class manageBookActions {
     });
 
     this.handleSearch(); // Perform the search for initial page load
-
+    
     //event listeners
     this.searchBtn.addEventListener("click", (e) => {
       this.currentPage = 1;

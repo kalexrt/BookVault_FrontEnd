@@ -2,6 +2,7 @@ import { NotificationApi } from "../api/notification.api";
 import { Toast } from "../utils/toast";
 
 export class NotificationActions {
+  private static isListenerAttached = false;
   // Function to handle the search for notifications
   static async handleSearch() {
     try {
@@ -47,15 +48,10 @@ export class NotificationActions {
     notificationTable!.innerHTML = notificationHTML;
 
     // Add event listener to mark a notification as read
-    notificationTable!.addEventListener("click", (event: MouseEvent) => {
-      const target = (event.target as Element).closest(
-        ".mark-as-read"
-      ) as HTMLElement | null;
-      if (target) {
-        const id = target.getAttribute("data-id");
-        if (id) NotificationActions.markAsRead(id);
-      }
-    });
+    if (!this.isListenerAttached) {
+      notificationTable!.addEventListener("click", this.handleNotificationClick);
+      this.isListenerAttached = true;
+    }
   }
 
   // Function to mark a notification as read
@@ -63,7 +59,7 @@ export class NotificationActions {
     try {
       // Mark the notification as read via the API
       await NotificationApi.markAsRead(notificationId);
-      NotificationActions.handleSearch();
+      setTimeout(()=>NotificationActions.handleSearch(),0) 
       Toast.showToast("Notification marked as read", "success");
     } catch (err) {
       Toast.showToast(
@@ -72,4 +68,12 @@ export class NotificationActions {
       );
     }
   }
+
+  private static handleNotificationClick = (event: MouseEvent) => {
+    const target = (event.target as Element).closest(".mark-as-read") as HTMLElement | null;
+    if (target) {
+      const id = target.getAttribute("data-id");
+      if (id) NotificationActions.markAsRead(id);
+    }
+  };
 }
