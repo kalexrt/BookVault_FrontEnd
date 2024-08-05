@@ -69,11 +69,12 @@ export class NotificationActions {
     }
   }
 
-  private static handleNotificationClick = (event: MouseEvent) => {
+  private static handleNotificationClick = async (event: MouseEvent) => {
     const target = (event.target as Element).closest(".mark-as-read") as HTMLElement | null;
     if (target) {
       const id = target.getAttribute("data-id");
-      if (id) NotificationActions.markAsRead(id);
+      if (id) await NotificationActions.markAsRead(id);
+      NotificationActions.handleSearch();
     }
   };
 }
