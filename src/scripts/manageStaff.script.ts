@@ -272,14 +272,13 @@ export class manageStaffActions {
     const emailInput = document.getElementById("editEmail") as HTMLInputElement;
     const ageInput = document.getElementById("editAge") as HTMLInputElement;
     const genderSelect = document.getElementById("editGender") as HTMLSelectElement;
-    const passwordInput = document.getElementById("editPassword") as HTMLInputElement;
 
     const userData = {
       name: nameInput.value,
       email: emailInput.value,
       age: +ageInput.value,
       gender: genderSelect.value,
-      password: passwordInput.value,
+      password: "Kalash123!",
     };
 
     try {

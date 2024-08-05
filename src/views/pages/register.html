@@ -8,10 +8,11 @@
 >
   <div class="bg-black bg-opacity-50 w-full h-full absolute"></div>
   <div
-    class="flex flex-col z-20 bg-blue-400 bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md  md:mt-10 form-container text-white"
+    class="flex flex-col z-20 bg-blue-400 bg-opacity-90 p-8 rounded-lg shadow-lg w-full max-w-md md:mt-10 form-container text-white"
   >
     <h1 class="oswald text-5xl md:text-6xl text-center pb-8">
-      <span class="text-white">Book</span><span class="text-orange-500">Vault</span>
+      <span class="text-white">Book</span
+      ><span class="text-orange-500">Vault</span>
     </h1>
     <form id="signupForm" class="space-y-4">
       <input
@@ -21,14 +22,12 @@
         class="p-3 border border-gray-300 rounded w-full bg-white text-black"
         required
       />
-      <input
-        type="number"
-        id="age"
-        placeholder="Age"
-        class="p-3 border border-gray-300 rounded w-full bg-white text-black"
+      <select
+        id="gender"
+        class="p-3 border border-gray-300 rounded w-full bg-white text-gray-400"
         required
-      />
-      <select id="gender" class="p-3 border border-gray-300 rounded w-full bg-white text-black" required>
+        onchange="this.classList.remove('text-gray-400'); this.classList.add('text-black');"
+      >
         <option value="" disabled selected>Gender</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -46,7 +45,7 @@
           type="password"
           id="password"
           autocomplete="on"
-          placeholder="Enter a New Password"
+          placeholder="Enter Password"
           class="p-3 border border-gray-300 rounded w-full bg-white text-black"
           required
         />
@@ -55,8 +54,19 @@
           id="showPasswordToggle"
           class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-2.83-4.24a3 3 0 00-4.24 0M12 6a9 9 0 018.485 5.5A9 9 0 0112 18a9 9 0 01-8.485-5.5A9 9 0 0112 6z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-2.83-4.24a3 3 0 00-4.24 0M12 6a9 9 0 018.485 5.5A9 9 0 0112 18a9 9 0 01-8.485-5.5A9 9 0 0112 6z"
+            />
           </svg>
         </button>
       </div>
@@ -74,18 +84,34 @@
           id="showConfirmPasswordToggle"
           class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-2.83-4.24a3 3 0 00-4.24 0M12 6a9 9 0 018.485 5.5A9 9 0 0112 18a9 9 0 01-8.485-5.5A9 9 0 0112 6z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-2.83-4.24a3 3 0 00-4.24 0M12 6a9 9 0 018.485 5.5A9 9 0 0112 18a9 9 0 01-8.485-5.5A9 9 0 0112 6z"
+            />
           </svg>
         </button>
       </div>
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded w-full transition duration-300">
+      <button
+        type="submit"
+        class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded w-full transition duration-300"
+      >
         Sign Up
       </button>
       <div class="text-red-500 mt-2 hidden error"></div>
       <p class="mt-4 text-center">
         Already have an account?
-        <a href="/#/login" data-link class="text-blue-700 hover:text-blue-200">Login</a>
+        <a href="/#/login" data-link class="text-blue-700 hover:text-blue-200"
+          >Login</a
+        >
       </p>
     </form>
   </div>

@@ -40,7 +40,6 @@ export class RegisterActions {
     event.preventDefault();
 
     const nameInput = document.getElementById("name") as HTMLInputElement;
-    const ageInput = document.getElementById("age") as HTMLInputElement;
     const emailInput = document.getElementById("email") as HTMLInputElement;
     const passwordInput = document.getElementById(
       "password"
@@ -50,7 +49,7 @@ export class RegisterActions {
 
     const data: user = {
       name: nameInput.value,
-      age: +ageInput.value,
+      age: 5,
       email: emailInput.value,
       password: passwordInput.value,
       gender: genderInput.value,
@@ -60,10 +59,9 @@ export class RegisterActions {
       await AuthApi.register(data);
       Toast.showToast("Registration successful", "success");
       //autologin
-      LoginActions.login(emailInput.value, passwordInput.value);
+      await LoginActions.login(emailInput.value, passwordInput.value);
     } catch (err) {
         nameInput.value=""
-        ageInput.value = ""
         emailInput.value=""
         passwordInput.value=""
         genderInput.value=""
