@@ -41,7 +41,7 @@ export class manageBookActions {
     });
 
     this.handleSearch(); // Perform the search for initial page load
-    
+
     //event listeners
     this.searchBtn.addEventListener("click", (e) => {
       this.currentPage = 1;
@@ -58,8 +58,8 @@ export class manageBookActions {
         this.addBookPopup.classList.add("hidden");
       }
     });
-     // Close edit Book popup when clicking outside the form
-     this.editBookPopup.addEventListener("click", (e) => {
+    // Close edit Book popup when clicking outside the form
+    this.editBookPopup.addEventListener("click", (e) => {
       if (e.target === this.editBookPopup) {
         this.editBookPopup.classList.add("hidden");
       }
@@ -71,7 +71,7 @@ export class manageBookActions {
         this.handleSearch();
       }
     });
-    this.form.addEventListener("submit",this.handleFormSubmit);
+    this.form.addEventListener("submit", this.handleFormSubmit);
     //to add event listeners to the action buttons before they render
     manageDeleteAndEditEventListeners(manageBookActions);
   }
@@ -174,15 +174,27 @@ export class manageBookActions {
       console.error("No user data found");
       return;
     }
-    const book = JSON.parse(bookData)
-    const editTitle = document.getElementById('editTitle') as HTMLInputElement;
-    const editIsbn = document.getElementById('editIsbn') as HTMLInputElement;
-    const editAuthors = document.getElementById('editAuthors')as HTMLInputElement;
-    const editGenres = document.getElementById('editGenres')as HTMLInputElement;
-    const editAvailableCopies = document.getElementById('editAvailableCopies') as HTMLInputElement;
-    const editTotalCopies = document.getElementById('editTotalCopies') as HTMLInputElement;
-    const submitButton = document.getElementById("editSubmitBtn") as HTMLButtonElement ;
-    const editBookPopup = document.getElementById("editBookPopup") as HTMLElement ;
+    const book = JSON.parse(bookData);
+    const editTitle = document.getElementById("editTitle") as HTMLInputElement;
+    const editIsbn = document.getElementById("editIsbn") as HTMLInputElement;
+    const editAuthors = document.getElementById(
+      "editAuthors"
+    ) as HTMLInputElement;
+    const editGenres = document.getElementById(
+      "editGenres"
+    ) as HTMLInputElement;
+    const editAvailableCopies = document.getElementById(
+      "editAvailableCopies"
+    ) as HTMLInputElement;
+    const editTotalCopies = document.getElementById(
+      "editTotalCopies"
+    ) as HTMLInputElement;
+    const submitButton = document.getElementById(
+      "editSubmitBtn"
+    ) as HTMLButtonElement;
+    const editBookPopup = document.getElementById(
+      "editBookPopup"
+    ) as HTMLElement;
 
     // Assigning the values from the book object to the input fields
     editTitle.value = book.title;
@@ -216,17 +228,25 @@ export class manageBookActions {
   static async handleEditSubmit(event: Event, bookId: string) {
     event.preventDefault();
     const form = document.getElementById("editBookForm") as HTMLFormElement;
-    const editTitle = document.getElementById('editTitle') as HTMLInputElement;
-    const editIsbn = document.getElementById('editIsbn') as HTMLInputElement;
-    const editAuthors = document.getElementById('editAuthors')as HTMLInputElement;
-    const editGenres = document.getElementById('editGenres')as HTMLInputElement;
-    const editAvailableCopies = document.getElementById('editAvailableCopies') as HTMLInputElement;
-    const editTotalCopies = document.getElementById('editTotalCopies') as HTMLInputElement;
-    const editBookPopup = document.getElementById("editBookPopup") as HTMLElement ;
+    const editTitle = document.getElementById("editTitle") as HTMLInputElement;
+    const editIsbn = document.getElementById("editIsbn") as HTMLInputElement;
+    const editAuthors = document.getElementById(
+      "editAuthors"
+    ) as HTMLInputElement;
+    const editGenres = document.getElementById(
+      "editGenres"
+    ) as HTMLInputElement;
+    const editAvailableCopies = document.getElementById(
+      "editAvailableCopies"
+    ) as HTMLInputElement;
+    const editTotalCopies = document.getElementById(
+      "editTotalCopies"
+    ) as HTMLInputElement;
+    const editBookPopup = document.getElementById(
+      "editBookPopup"
+    ) as HTMLElement;
 
-    const authors = editAuthors.value
-      .split(",")
-      .map((author) => author.trim());
+    const authors = editAuthors.value.split(",").map((author) => author.trim());
     const genres = editGenres.value.split(",").map((genre) => genre.trim());
 
     const bookData = {
@@ -244,14 +264,13 @@ export class manageBookActions {
       form.reset();
       editBookPopup.classList.add("hidden");
       manageBookActions.handleSearch();
-    }catch(err){
+    } catch (err) {
       Toast.showToast(
         "An error occurred while updating the book. Please try again.",
         "error"
       );
     }
   }
-  
 
   static async handleFormSubmit(event: Event) {
     event.preventDefault();

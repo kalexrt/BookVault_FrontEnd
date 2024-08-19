@@ -14,8 +14,6 @@ export function manageDeleteAndEditEventListeners(
         actionHandler.handleEditButton(target);
     }
   };
-
-  console.log(isListenerAdded);
   
   if (isListenerAdded) {
     document.removeEventListener("click", handleEvent);

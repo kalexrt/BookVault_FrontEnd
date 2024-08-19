@@ -71,3 +71,10 @@ export class Router {
     this.handleRouteChange();
   }
 }
+
+// const specialCase = [
+//   "#/manage-staff",
+//   "#/manage-book",
+//   "#/manage-borrow",
+//   "#/manage-user",
+// ];
